@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+set -o pipefail
+mkdir -p vendor
+wget -q -O vendor/plz.el https://raw.githubusercontent.com/r0man/plz.el/plz-stream/plz.el
+if [[ ! -z "$GITHUB_ENV" ]]; then
+    echo "EMACSLOADPATH=vendor:$EMACSLOADPATH" >> $GITHUB_ENV
+else
+    echo "Please add the vendor directory to your shell profile:"
+    echo 'export EMACSLOADPATH="vendor:$EMACSLOADPATH"'
+fi
