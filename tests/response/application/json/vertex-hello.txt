@@ -1,0 +1,110 @@
+HTTP/2 200 
+content-type: application/json; charset=UTF-8
+vary: Origin
+vary: X-Origin
+vary: Referer
+content-encoding: gzip
+date: Fri, 15 Mar 2024 10:56:22 GMT
+server: scaffolding on HTTPServer2
+cache-control: private
+x-xss-protection: 0
+x-frame-options: SAMEORIGIN
+x-content-type-options: nosniff
+alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+
+[{
+  "candidates": [
+    {
+      "content": {
+        "role": "model",
+        "parts": [
+          {
+            "text": "Hi there!"
+          }
+        ]
+      },
+      "safetyRatings": [
+        {
+          "category": "HARM_CATEGORY_HATE_SPEECH",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.022846196,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.03825006
+        },
+        {
+          "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.058131594,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.044431433
+        },
+        {
+          "category": "HARM_CATEGORY_HARASSMENT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.060863446,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.034553625
+        },
+        {
+          "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.11736965,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.10017223
+        }
+      ]
+    }
+  ]
+}
+,
+{
+  "candidates": [
+    {
+      "content": {
+        "role": "model",
+        "parts": [
+          {
+            "text": " How can I assist you today?"
+          }
+        ]
+      },
+      "finishReason": "STOP",
+      "safetyRatings": [
+        {
+          "category": "HARM_CATEGORY_HATE_SPEECH",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.030157408,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.04023794
+        },
+        {
+          "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.08181271,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.025613913
+        },
+        {
+          "category": "HARM_CATEGORY_HARASSMENT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.047958102,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.015130728
+        },
+        {
+          "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.17582092,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.0416178
+        }
+      ]
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 1,
+    "candidatesTokenCount": 10,
+    "totalTokenCount": 11
+  }
+}
+]

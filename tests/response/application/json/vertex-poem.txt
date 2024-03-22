@@ -1,0 +1,335 @@
+HTTP/2 200 
+content-type: application/json; charset=UTF-8
+vary: Origin
+vary: X-Origin
+vary: Referer
+content-encoding: gzip
+date: Wed, 20 Mar 2024 08:11:00 GMT
+server: scaffolding on HTTPServer2
+cache-control: private
+x-xss-protection: 0
+x-frame-options: SAMEORIGIN
+x-content-type-options: nosniff
+alt-svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+
+[{
+  "candidates": [
+    {
+      "content": {
+        "role": "model",
+        "parts": [
+          {
+            "text": "**Ode to Emacs, Master of Code**\n\nIn the realm of text, where chaos reigns,\nEmacs descends, a force"
+          }
+        ]
+      },
+      "safetyRatings": [
+        {
+          "category": "HARM_CATEGORY_HATE_SPEECH",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.08064661,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.07682221
+        },
+        {
+          "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.17078441,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.14414884
+        },
+        {
+          "category": "HARM_CATEGORY_HARASSMENT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.22661245,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.085403666
+        },
+        {
+          "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.09568695,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.056444023
+        }
+      ]
+    }
+  ]
+}
+,
+{
+  "candidates": [
+    {
+      "content": {
+        "role": "model",
+        "parts": [
+          {
+            "text": " that sustains.\nWith its 🧙 wizardry and 🗝️ secret powers,\nIt"
+          }
+        ]
+      },
+      "safetyRatings": [
+        {
+          "category": "HARM_CATEGORY_HATE_SPEECH",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.055617608,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.044348583
+        },
+        {
+          "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.1322902,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.111821815
+        },
+        {
+          "category": "HARM_CATEGORY_HARASSMENT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.107063465,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.03138043
+        },
+        {
+          "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.11496335,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.039937314
+        }
+      ]
+    }
+  ]
+}
+,
+{
+  "candidates": [
+    {
+      "content": {
+        "role": "model",
+        "parts": [
+          {
+            "text": " wrangles words, bringing order to hours.\n\nIts 🐈 cat-like reflexes, lightning-fast,\nEdit and search with unmatched contrast.\nFrom 📜 scrolls to 💻 terminals so bright,\nEmacs illuminates the"
+          }
+        ]
+      },
+      "safetyRatings": [
+        {
+          "category": "HARM_CATEGORY_HATE_SPEECH",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.063831605,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.052521676
+        },
+        {
+          "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.062331032,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.113776386
+        },
+        {
+          "category": "HARM_CATEGORY_HARASSMENT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.11338311,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.04288224
+        },
+        {
+          "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.12453206,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.042802148
+        }
+      ]
+    }
+  ]
+}
+,
+{
+  "candidates": [
+    {
+      "content": {
+        "role": "model",
+        "parts": [
+          {
+            "text": " code with its light.\n\nIts 💻 extensions, a boundless expanse,\nTailor thy editor to thy heart's dance.\nFrom 🐍 Python to 💻 TypeScript's sway,\nEmacs orchestrates, paving the way.\n\nWith its "
+          }
+        ]
+      },
+      "safetyRatings": [
+        {
+          "category": "HARM_CATEGORY_HATE_SPEECH",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.059210256,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.051941562
+        },
+        {
+          "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.039787807,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.10951516
+        },
+        {
+          "category": "HARM_CATEGORY_HARASSMENT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.10631887,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.05300978
+        },
+        {
+          "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.101767845,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.0434469
+        }
+      ]
+    }
+  ]
+}
+,
+{
+  "candidates": [
+    {
+      "content": {
+        "role": "model",
+        "parts": [
+          {
+            "text": "⌨️ keyboard shortcuts, a symphony of ease,\nThou navigate through code with utmost breeze.\nNo 🖱️ mouse required, thy fingers glide,\nAs thou command this editor with pride.\n\nIts 💻 terminal prowess, a window to grace,\nRun code, debug, and explore with space.\nFrom 🛠️ git"
+          }
+        ]
+      },
+      "safetyRatings": [
+        {
+          "category": "HARM_CATEGORY_HATE_SPEECH",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.060863446,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.056652427
+        },
+        {
+          "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.03155902,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.11636176
+        },
+        {
+          "category": "HARM_CATEGORY_HARASSMENT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.09704755,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.058024753
+        },
+        {
+          "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.09203286,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.047249716
+        }
+      ]
+    }
+  ]
+}
+,
+{
+  "candidates": [
+    {
+      "content": {
+        "role": "model",
+        "parts": [
+          {
+            "text": " commits to 🌐 network streams,\nEmacs empowers, fulfilling thy dreams.\n\nSo raise a 💻 keyboard, let fingers soar,\nWith Emacs as thy guide, knowledge to explore.\nThrough syntax jungles and coding maze,\nEmacs shines brightly, illuminating the ways.\n\nMay thy code be clean, thy projects refined,\nAs Emacs guides thee, leaving chaos behind.\nIn this digital realm, where creativity blooms,\nEmacs,"
+          }
+        ]
+      },
+      "safetyRatings": [
+        {
+          "category": "HARM_CATEGORY_HATE_SPEECH",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.050988145,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.06119922
+        },
+        {
+          "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.03138043,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.08756384
+        },
+        {
+          "category": "HARM_CATEGORY_HARASSMENT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.08137363,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.055515114
+        },
+        {
+          "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.09041373,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.05340333
+        }
+      ]
+    }
+  ]
+}
+,
+{
+  "candidates": [
+    {
+      "content": {
+        "role": "model",
+        "parts": [
+          {
+            "text": " the sorcerer, dispels all dooms."
+          }
+        ]
+      },
+      "finishReason": "STOP",
+      "safetyRatings": [
+        {
+          "category": "HARM_CATEGORY_HATE_SPEECH",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.05781161,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.066934206
+        },
+        {
+          "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.034293946,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.091220066
+        },
+        {
+          "category": "HARM_CATEGORY_HARASSMENT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.08647765,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.060197048
+        },
+        {
+          "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          "probability": "NEGLIGIBLE",
+          "probabilityScore": 0.09384396,
+          "severity": "HARM_SEVERITY_NEGLIGIBLE",
+          "severityScore": 0.05340333
+        }
+      ]
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 10,
+    "candidatesTokenCount": 320,
+    "totalTokenCount": 330
+  }
+}
+]
