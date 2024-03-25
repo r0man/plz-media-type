@@ -359,6 +359,38 @@
     (should (equal "Operation timeout." (cdr (plz-error-curl-error plz-error))))
     (should (< (time-to-seconds (time-subtract end-time start-time)) 1.1))))
 
+(ert-deftest plz-media-type-request-resolve-error-async ()
+  (let* ((else) (finally) (then)
+         (process (plz-media-type-request 'get "https://httpbinnnnnn.org/get/status/404"
+                    :as `(media-types ,plz-media-types)
+                    :else (lambda (object) (push object else))
+                    :finally (lambda () (push t finally))
+                    :then (lambda (object) (push object then)))))
+    (plz-media-type-test-wait process)
+    (should (equal '(t) finally))
+    (should (equal 0 (length then)))
+    (should (equal 1 (length else)))
+    (seq-doseq (error else)
+      (should (plz-error-p error))
+      (should (null (plz-error-message error)))
+      (should (null (plz-error-response error)))
+      (equal '(6 . "Couldn't resolve host. The given remote host was not resolved.")
+             (plz-error-curl-error error)))))
+
+(ert-deftest plz-media-type-request-resolve-error-sync ()
+  (let* ((result (condition-case error
+                     (plz-media-type-request 'get "https://httpbinnnnnn.org/get/status/404"
+                       :as `(media-types ,plz-media-types))
+                   (plz-error error))))
+    (should (equal 'plz-curl-error (car result)))
+    (should (equal "Curl error" (cadr result)))
+    (let ((error (caddr result)))
+      (should (plz-error-p error))
+      (should (null (plz-error-message error)))
+      (should (null (plz-error-response error)))
+      (equal '(6 . "Couldn't resolve host. The given remote host was not resolved.")
+             (plz-error-curl-error error)))))
+
 ;;;; Footer
 
 (provide 'test-plz-media-type)
