@@ -347,7 +347,6 @@ will always be set to nil.")
   ((media-type plz-media-type:application/json-array) response)
   "Transform the RESPONSE into a format suitable for MEDIA-TYPE."
   (ignore media-type)
-  (plz-media-type:application/json-array--parse-stream media-type)
   (setf (plz-response-body response) nil)
   response)
 
@@ -401,7 +400,7 @@ will always be set to nil.")
 (cl-defmethod plz-media-type-then
   ((media-type plz-media-type:application/x-ndjson) response)
   "Transform the RESPONSE into a format suitable for MEDIA-TYPE."
-  (plz-media-type:application/x-ndjson--parse-stream media-type)
+  (ignore media-type)
   (setf (plz-response-body response) nil)
   response)
 
