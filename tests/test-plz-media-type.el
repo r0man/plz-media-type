@@ -191,7 +191,45 @@
         (should (equal 200 (plz-response-status response)))
         (should (string-match "[DONE]" (plz-response-body response)))))))
 
-(ert-deftest test-plz-media-type:application/x-ndjson ()
+(ert-deftest test-plz-media-type:application/x-ndjson:async ()
+  (let* ((else) (finally) (then) (objects)
+         (process (plz-media-type-request 'get "http://localhost/stream/5"
+                    :as `(media-types ((application/json
+                                        . ,(plz-media-type:application/x-ndjson
+                                            :handler (lambda (object)
+                                                       (push object objects))))))
+                    :else (lambda (object) (push object else))
+                    :finally (lambda () (push t finally))
+                    :then (lambda (object) (push object then)))))
+    (plz-media-type-test-wait process)
+    (should (null else))
+    (should (equal '(t) finally))
+    (should (equal 1 (length then)))
+    (seq-doseq (response then)
+      (should (plz-response-p response))
+      (should (equal 200 (plz-response-status response)))
+      (should (null (plz-response-body response))))
+    (should (equal 5 (length objects)))
+    (should (equal '(0 1 2 3 4)
+                   (seq-map (lambda (object) (alist-get 'id object))
+                            (reverse objects))))))
+
+(ert-deftest test-plz-media-type:application/x-ndjson:sync ()
+  (let* ((objects)
+         (response (plz-media-type-request 'get "http://localhost/stream/5"
+                     :as `(media-types ((application/json
+                                         . ,(plz-media-type:application/x-ndjson
+                                             :handler (lambda (object)
+                                                        (push object objects)))))))))
+    (should (plz-response-p response))
+    (should (equal 200 (plz-response-status response)))
+    (should (null (plz-response-body response)))
+    (should (equal 5 (length objects)))
+    (should (equal '(0 1 2 3 4)
+                   (seq-map (lambda (object) (alist-get 'id object))
+                            (reverse objects))))))
+
+(ert-deftest test-plz-media-type:application/x-ndjson:ollama ()
   (plz-media-type-test-with-mock-response (plz-media-type-test-response "application/x-ndjson/ollama-hello.txt")
     (let* ((else) (finally) (then) (objects)
            (process (plz-media-type-request 'get "MOCK-URL"
