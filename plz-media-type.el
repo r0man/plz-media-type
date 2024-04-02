@@ -640,19 +640,19 @@ not.
                                             (kill-buffer buffer))))
                              :headers headers
                              :noquery noquery
-                             :process-filter (lambda (process chunk)
-                                               (condition-case cause
-                                                   (plz-media-type-process-filter process media-types chunk)
-                                                 (error
-                                                  (let ((buffer (process-buffer process)))
-                                                    (setq filter-error
-                                                          (make-plz-media-type-filter-error
-                                                           :cause cause
-                                                           :message (format "error in process filter: %S" cause)
-                                                           :response (when (buffer-live-p buffer)
-                                                                       (with-current-buffer buffer
-                                                                         plz-media-type--response))))
-                                                    (delete-process process)))))
+                             :filter (lambda (process chunk)
+                                       (condition-case cause
+                                           (plz-media-type-process-filter process media-types chunk)
+                                         (error
+                                          (let ((buffer (process-buffer process)))
+                                            (setq filter-error
+                                                  (make-plz-media-type-filter-error
+                                                   :cause cause
+                                                   :message (format "error in process filter: %S" cause)
+                                                   :response (when (buffer-live-p buffer)
+                                                               (with-current-buffer buffer
+                                                                 plz-media-type--response))))
+                                            (delete-process process)))))
                              :timeout timeout
                              :then (if (symbolp then)
                                        then
