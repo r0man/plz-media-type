@@ -166,7 +166,31 @@ an alist of parameters."
 (defvar-local plz-media-type--response nil
   "The response of the process buffer.")
 
-(defun plz-media-type-process-filter (process media-types chunk)
+(defun plz-media-type--parse-headers ()
+  "Parse the HTTP response headers in the current buffer."
+  (forward-line 1)
+  (let ((limit (save-excursion
+                 (re-search-forward plz-http-end-of-headers-regexp nil)
+                 (point))))
+    (cl-loop while (re-search-forward (rx bol (group (1+ (not (in ":")))) ":" (1+ blank)
+                                          (group (1+ (not (in "\r\n")))))
+                                      limit t)
+             collect (cons (intern (downcase (match-string 1))) (match-string 2)))))
+
+(cl-defun plz-media-type--parse-response ()
+  "Parse the response in the current buffer."
+  (when (re-search-forward plz-http-end-of-headers-regexp nil t)
+    (let ((end-of-headers (point)))
+      (goto-char (point-min))
+      (when (looking-at plz-http-response-status-line-regexp)
+        (prog1 (make-plz-response
+                :version (string-to-number (match-string 1))
+                :status (string-to-number (match-string 2))
+                :headers (plz-media-type--parse-headers)
+                :body (buffer-substring end-of-headers (point-max)))
+          (goto-char end-of-headers))))))
+
+(defun plz-media-type-process-filter (process media-types string)
   "The process filter that handles different content types.
 
 PROCESS is the process.
@@ -174,37 +198,34 @@ PROCESS is the process.
 MEDIA-TYPES is an association list from media type to an
 instance of a content type class.
 
-CHUNK is a part of the HTTP body."
+STRING which is output just received from the process."
   (when (buffer-live-p (process-buffer process))
     (with-current-buffer (process-buffer process)
       (let ((moving (= (point) (process-mark process))))
         (if-let (media-type plz-media-type--current)
             (let ((response plz-media-type--response))
-              (setf (plz-response-body response) chunk)
+              (setf (plz-response-body response) string)
               (plz-media-type-process media-type process response))
           (progn
             (save-excursion
               (goto-char (process-mark process))
-              (insert chunk)
+              (insert string)
               (set-marker (process-mark process) (point)))
             (goto-char (point-min))
-            (when (re-search-forward plz-http-end-of-headers-regexp nil t)
-              (let ((body-start (point)))
-                (goto-char (point-min))
-                (let* ((response (prog1 (plz--response) (widen)))
-                       (media-type (plz-media-type-of-response media-types response)))
-                  (setq-local plz-media-type--current media-type)
-                  (setq-local plz-media-type--response
-                              (make-plz-response
-                               :headers (plz-response-headers response)
-                               :status (plz-response-status response)
-                               :version (plz-response-version response)))
-                  (when-let (body (plz-response-body response))
-                    (when (> (length body) 0)
-                      (setf (plz-response-body response) body)
-                      (delete-region body-start (point-max))
-                      (set-marker (process-mark process) (point))
-                      (plz-media-type-process media-type process response))))))))
+            (when-let (chunk (plz-media-type--parse-response))
+              (delete-region (point) (point-max))
+              (let ((media-type (plz-media-type-of-response media-types chunk)))
+                (setq-local plz-media-type--current media-type)
+                (setq-local plz-media-type--response
+                            (make-plz-response
+                             :headers (plz-response-headers chunk)
+                             :status (plz-response-status chunk)
+                             :version (plz-response-version chunk)))
+                (when-let (body (plz-response-body chunk))
+                  (when (> (length body) 0)
+                    (setf (plz-response-body chunk) body)
+                    (set-marker (process-mark process) (point))
+                    (plz-media-type-process media-type process chunk)))))))
         (when moving
           (goto-char (process-mark process)))))))
 
