@@ -44,13 +44,6 @@
 (require 'eieio)
 (require 'plz)
 
-(define-error 'plz-media-type-filter-error
-              "plz-media-type: Error in process filter"
-              'plz-error)
-
-(cl-defstruct (plz-media-type-filter-error (:include plz-error))
-  cause)
-
 (defclass plz-media-type ()
   ((coding-system
     :documentation "The coding system to use for the media type."
@@ -165,6 +158,18 @@ an alist of parameters."
 
 (defvar-local plz-media-type--response nil
   "The response of the process buffer.")
+
+(defun plz-media-type--schedule (handler messages)
+  "Schedule MESSAGES to be processed with the HANDLER on a timer."
+  (cl-loop with time = (current-time)
+           for msg = (pop messages) while msg
+           do (let ((timer (timer-create)))
+                (timer-set-time timer time)
+                (timer-set-function timer
+                                    (lambda (handler msg)
+                                      (with-temp-buffer (funcall handler msg)))
+                                    (list handler msg))
+                (timer-activate timer))))
 
 (defun plz-media-type--parse-headers ()
   "Parse the HTTP response headers in the current buffer."
@@ -360,24 +365,25 @@ will always be set to nil.")
 
 (defun plz-media-type:application/json-array--parse-stream (media-type)
   "Parse all lines of the newline delimited JSON MEDIA-TYPE in the PROCESS buffer."
-  (with-slots (handler) media-type
+  (let ((objects))
     (unless plz-media-type--position
       (setq-local plz-media-type--position (point)))
     (goto-char plz-media-type--position)
     (when-let (result (plz-media-type:application/json-array--consume-next media-type))
       (while result
-        (when (and (equal :array-element (car result))
-                   (functionp handler))
-          (funcall handler (cdr result)))
-        (setq result (plz-media-type:application/json-array--consume-next media-type))))))
+        (when (equal :array-element (car result))
+          (push (cdr result) objects))
+        (setq result (plz-media-type:application/json-array--consume-next media-type))))
+    objects))
 
 (cl-defmethod plz-media-type-process
   ((media-type plz-media-type:application/json-array) process chunk)
   "Process the CHUNK according to MEDIA-TYPE using PROCESS."
-  (ignore media-type)
   (cl-call-next-method media-type process chunk)
-  (plz-media-type:application/json-array--parse-stream media-type)
-  (set-marker (process-mark process) (point-max)))
+  (with-slots (handler) media-type
+    (let ((objects (plz-media-type:application/json-array--parse-stream media-type)))
+      (set-marker (process-mark process) (point-max))
+      (plz-media-type--schedule handler objects))))
 
 (cl-defmethod plz-media-type-then
   ((media-type plz-media-type:application/json-array) response)
@@ -417,21 +423,24 @@ will always be set to nil.")
 (defun plz-media-type:application/x-ndjson--parse-stream (media-type)
   "Parse all lines of the newline delimited JSON MEDIA-TYPE in the PROCESS buffer."
   (with-slots (handler) media-type
-    (unless plz-media-type--position
-      (setq-local plz-media-type--position (point)))
-    (goto-char plz-media-type--position)
-    (when-let (object (plz-media-type:application/x-ndjson--parse-line media-type))
-      (while object
-        (setq-local plz-media-type--position (point))
-        (when (functionp handler)
-          (funcall handler object))
-        (setq object (plz-media-type:application/x-ndjson--parse-line media-type))))))
+    (let (objects)
+      (unless plz-media-type--position
+        (setq-local plz-media-type--position (point)))
+      (goto-char plz-media-type--position)
+      (when-let (object (plz-media-type:application/x-ndjson--parse-line media-type))
+        (while object
+          (setq-local plz-media-type--position (point))
+          (push object objects)
+          (setq object (plz-media-type:application/x-ndjson--parse-line media-type))))
+      objects)))
 
 (cl-defmethod plz-media-type-process
   ((media-type plz-media-type:application/x-ndjson) process chunk)
   "Process the CHUNK according to MEDIA-TYPE using PROCESS."
   (cl-call-next-method media-type process chunk)
-  (plz-media-type:application/x-ndjson--parse-stream media-type))
+  (with-slots (handler) media-type
+    (let ((objects (plz-media-type:application/x-ndjson--parse-stream media-type)))
+      (plz-media-type--schedule handler objects))))
 
 (cl-defmethod plz-media-type-then
   ((media-type plz-media-type:application/x-ndjson) response)
@@ -511,11 +520,6 @@ parsing the HTTP response body with the
 (defun plz-media-type--handle-sync-error (error media-types)
   "Handle the synchronous ERROR using MEDIA-TYPES."
   (cond
-   ((plz-media-type-filter-error-p error)
-    (signal 'plz-media-type-filter-error
-            (list (plz-media-type-filter-error-message error)
-                  (plz-media-type-filter-error-response error)
-                  (plz-media-type-filter-error-cause error))))
    ((eq 'plz-http-error (car error))
     (plz-media-type--handle-sync-http-error error media-types))
    (t (signal (car error) (cdr error)))))
@@ -637,7 +641,7 @@ not.
   (if-let (media-types (pcase as
                          (`(media-types ,media-types)
                           media-types)))
-      (let ((buffer) (filter-error))
+      (let ((buffer))
         (condition-case error
             (let* ((plz-curl-default-args (cons "--no-buffer" plz-curl-default-args))
                    (result (plz method url
@@ -649,10 +653,9 @@ not.
                              :else (lambda (error)
                                      (setq buffer (current-buffer))
                                      (when (or (functionp else) (symbolp else))
-                                       (funcall else (or filter-error
-                                                         (plz-media-type-else
-                                                          plz-media-type--current
-                                                          error)))))
+                                       (funcall else (plz-media-type-else
+                                                      plz-media-type--current
+                                                      error))))
                              :finally (lambda ()
                                         (unwind-protect
                                             (when (functionp finally)
@@ -662,18 +665,7 @@ not.
                              :headers headers
                              :noquery noquery
                              :filter (lambda (process chunk)
-                                       (condition-case cause
-                                           (plz-media-type-process-filter process media-types chunk)
-                                         (error
-                                          (let ((buffer (process-buffer process)))
-                                            (setq filter-error
-                                                  (make-plz-media-type-filter-error
-                                                   :cause cause
-                                                   :message (format "error in process filter: %S" cause)
-                                                   :response (when (buffer-live-p buffer)
-                                                               (with-current-buffer buffer
-                                                                 plz-media-type--response))))
-                                            (delete-process process)))))
+                                       (plz-media-type-process-filter process media-types chunk))
                              :timeout timeout
                              :then (if (symbolp then)
                                        then
@@ -694,7 +686,7 @@ not.
                     (t (user-error "Unexpected response: %s" result))))
           ;; TODO: How to kill the buffer for sync requests that raise an error?
           (plz-error
-           (plz-media-type--handle-sync-error (or filter-error error) media-types))))
+           (plz-media-type--handle-sync-error error media-types))))
     (apply #'plz (append (list method url) rest))))
 
 ;;;; Footer
