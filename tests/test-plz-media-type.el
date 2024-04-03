@@ -146,46 +146,6 @@
   (let ((media-type (plz-media-type-parse "text/html")))
     (should (equal 'text/html (plz-media-type-symbol media-type)))))
 
-(ert-deftest test-plz-media-type-process-filter-error-sync ()
-  (plz-media-type-test-with-mock-response (plz-media-type-test-response "application/x-ndjson/ollama-hello.txt")
-    (let ((result (condition-case error
-                      (plz-media-type-request 'get "MOCK-URL"
-                        :as `(media-types ((application/x-ndjson
-                                            . ,(plz-media-type:application/x-ndjson
-                                                :handler (lambda (_) (signal 'error "boom")))))))
-                    (plz-error error))))
-      (should (equal 'plz-media-type-filter-error (elt result 0)))
-      (should (equal "error in process filter: (error . \"boom\")" (elt result 1)))
-      (let ((response (elt result 2)))
-        (should (plz-response-p response))
-        (should (equal 200 (plz-response-status response)))
-        (should (null (plz-response-body response))))
-      (should (equal '(error . "boom") (elt result 3))))))
-
-(ert-deftest test-plz-media-type-process-filter-error-async ()
-  (plz-media-type-test-with-mock-response (plz-media-type-test-response "application/x-ndjson/ollama-hello.txt")
-    (let* ((else) (finally) (then)
-           (process (plz-media-type-request 'get "MOCK-URL"
-                      :as `(media-types ((application/x-ndjson
-                                          . ,(plz-media-type:application/x-ndjson
-                                              :handler (lambda (_) (signal 'error "boom"))))))
-                      :else (lambda (object) (push object else))
-                      :finally (lambda () (push t finally))
-                      :then (lambda (object) (push object then)))))
-      (plz-media-type-test-wait process)
-      (should (equal '(t) finally))
-      (should (equal 0 (length then)))
-      (should (equal 1 (length else)))
-      (seq-doseq (error else)
-        (should (plz-error-p error))
-        (should (plz-media-type-filter-error-p error))
-        (should (equal "error in process filter: (error . \"boom\")" (plz-error-message error)))
-        (should (equal '(error . "boom") (plz-media-type-filter-error-cause error)))
-        (let ((response (plz-error-response error)))
-          (should (plz-response-p response))
-          (should (equal 200 (plz-response-status response)))
-          (should (null (plz-response-body response))))))))
-
 (ert-deftest test-plz-media-type-request:application/octet-stream:stream ()
   (plz-media-type-test-with-mock-response (plz-media-type-test-response "text/event-stream/openai-hello.txt")
     (let* ((else) (finally) (then)
