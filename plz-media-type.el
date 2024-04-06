@@ -72,6 +72,16 @@ parameter in the content type header, or the coding-sytem of the
 media type.  If the coding system of a media type is nil, the
 response will not be decoded.")
 
+(defclass plz-media-type-parser ()
+  ((buffer
+    :documentation "The buffer name on which the parser operates on."
+    :initarg :buffer
+    :type (or null string))
+   (position
+    :documentation "The buffer position of the parser."
+    :initarg :position
+    :type (or null number))))
+
 (defun plz-media-type-charset (media-type)
   "Return the character set of the MEDIA-TYPE."
   (with-slots (parameters) media-type
@@ -220,6 +230,9 @@ STRING which is output just received from the process."
             (when-let (chunk (plz-media-type--parse-response))
               (delete-region (point) (point-max))
               (let ((media-type (plz-media-type-of-response media-types chunk)))
+                (with-slots (buffer position) media-type
+                  (setf buffer (buffer-name (process-buffer process))
+                        position (point)))
                 (setq-local plz-media-type--current media-type)
                 (setq-local plz-media-type--response
                             (make-plz-response
@@ -236,7 +249,7 @@ STRING which is output just received from the process."
 
 ;; Content Type: application/octet-stream
 
-(defclass plz-media-type:application/octet-stream (plz-media-type)
+(defclass plz-media-type:application/octet-stream (plz-media-type plz-media-type-parser)
   ((type :initform 'application)
    (subtype :initform 'octet-stream))
   "Media type class that handles the processing of octet stream
@@ -358,23 +371,23 @@ will always be set to nil.")
 
 (defun plz-media-type:application/json-array--consume-next (media-type)
   "Parse a single line of the newline delimited JSON MEDIA-TYPE."
-  (let ((begin (point)))
-    (prog1 (plz-media-type:application/json-array--parse-next media-type)
-      (delete-region begin (point))
-      (setq-local plz-media-type--position (point)))))
+  (with-slots (position) media-type
+    (let ((begin (point)))
+      (prog1 (plz-media-type:application/json-array--parse-next media-type)
+        (delete-region begin (point))
+        (setf position (point))))))
 
 (defun plz-media-type:application/json-array--parse-stream (media-type)
   "Parse all lines of the newline delimited JSON MEDIA-TYPE in the PROCESS buffer."
-  (let ((objects))
-    (unless plz-media-type--position
-      (setq-local plz-media-type--position (point)))
-    (goto-char plz-media-type--position)
-    (when-let (result (plz-media-type:application/json-array--consume-next media-type))
-      (while result
-        (when (equal :array-element (car result))
-          (push (cdr result) objects))
-        (setq result (plz-media-type:application/json-array--consume-next media-type))))
-    objects))
+  (with-slots (position) media-type
+    (let ((objects))
+      (goto-char position)
+      (when-let (result (plz-media-type:application/json-array--consume-next media-type))
+        (while result
+          (when (equal :array-element (car result))
+            (push (cdr result) objects))
+          (setq result (plz-media-type:application/json-array--consume-next media-type))))
+      objects)))
 
 (cl-defmethod plz-media-type-process
   ((media-type plz-media-type:application/json-array) process chunk)
@@ -422,14 +435,12 @@ will always be set to nil.")
 
 (defun plz-media-type:application/x-ndjson--parse-stream (media-type)
   "Parse all lines of the newline delimited JSON MEDIA-TYPE in the PROCESS buffer."
-  (with-slots (handler) media-type
+  (with-slots (handler position) media-type
     (let (objects)
-      (unless plz-media-type--position
-        (setq-local plz-media-type--position (point)))
-      (goto-char plz-media-type--position)
+      (goto-char position)
       (when-let (object (plz-media-type:application/x-ndjson--parse-line media-type))
         (while object
-          (setq-local plz-media-type--position (point))
+          (setf position (point))
           (push object objects)
           (setq object (plz-media-type:application/x-ndjson--parse-line media-type))))
       objects)))
