@@ -524,6 +524,14 @@ parsing the HTTP response body with the
     (plz-media-type--handle-sync-http-error error media-types))
    (t (signal (car error) (cdr error)))))
 
+(defun plz-media-type--handle-sync-response (buffer)
+  "Handle a successful synchronous response in BUFFER."
+  (unwind-protect
+      (with-current-buffer buffer
+        (plz-media-type-then plz-media-type--current plz-media-type--response))
+    (when (buffer-live-p buffer)
+      (kill-buffer buffer))))
+
 (cl-defun plz-media-type-request
     (method
      url
@@ -676,17 +684,12 @@ not.
                                                         plz-media-type--current
                                                         plz-media-type--response))))))))
               (cond ((bufferp result)
-                     (unwind-protect
-                         (with-current-buffer result
-                           (plz-media-type-then plz-media-type--current plz-media-type--response))
-                       (when (buffer-live-p result)
-                         (kill-buffer result))))
+                     (plz-media-type--handle-sync-response result))
                     ((processp result)
                      result)
                     (t (user-error "Unexpected response: %s" result))))
           ;; TODO: How to kill the buffer for sync requests that raise an error?
-          (plz-error
-           (plz-media-type--handle-sync-error error media-types))))
+          (plz-error (plz-media-type--handle-sync-error error media-types))))
     (apply #'plz (append (list method url) rest))))
 
 ;;;; Footer
