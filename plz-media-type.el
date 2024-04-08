@@ -129,7 +129,7 @@ response will not be decoded.")
     (when-let (header (cdr (assoc 'content-type headers)))
       (plz-media-type--parse header))))
 
-(defun plz-media--type-find (media-types media-type)
+(defun plz-media-type--find (media-types media-type)
   "Lookup the MEDIA-TYPE in MEDIA-TYPES."
   (or (alist-get (plz-media-type-symbol media-type) media-types)
       (alist-get t media-types)
@@ -138,7 +138,7 @@ response will not be decoded.")
 (defun plz-media-type--of-response (media-types response)
   "Lookup the content type of RESPONSE in MEDIA-TYPES."
   (let ((media-type (plz-media-type--content-type response)))
-    (clone (plz-media--type-find media-types media-type)
+    (clone (plz-media-type--find media-types media-type)
            :parameters (oref media-type parameters))))
 
 (defun plz-media-type-decode-string (media-type string)
