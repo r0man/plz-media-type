@@ -135,7 +135,7 @@ response will not be decoded.")
       (alist-get t media-types)
       (plz-media-type:application/octet-stream)))
 
-(defun plz-media-type-of-response (media-types response)
+(defun plz-media-type--of-response (media-types response)
   "Lookup the content type of RESPONSE in MEDIA-TYPES."
   (let ((media-type (plz-media-type--content-type response)))
     (clone (plz-media--type-find media-types media-type)
@@ -216,7 +216,7 @@ STRING which is output just received from the process."
             (goto-char (point-min))
             (when-let (chunk (plz-media-type--parse-response))
               (delete-region (point) (point-max))
-              (let ((media-type (plz-media-type-of-response media-types chunk)))
+              (let ((media-type (plz-media-type--of-response media-types chunk)))
                 (setq-local plz-media-type--current media-type)
                 (setq-local plz-media-type--response
                             (make-plz-response
@@ -506,7 +506,7 @@ parsing the HTTP response body with the
             (cond
              ((plz-error-response plzerror)
               (let ((response (plz-error-response plzerror)))
-                (if-let (media-type (plz-media-type-of-response media-types response))
+                (if-let (media-type (plz-media-type--of-response media-types response))
                     (list msg (with-temp-buffer
                                 (when-let (body (plz-response-body response))
                                   (insert body)
