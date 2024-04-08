@@ -141,7 +141,7 @@ response will not be decoded.")
     (clone (plz-media-type--find media-types media-type)
            :parameters (oref media-type parameters))))
 
-(defun plz-media-type-decode-string (media-type string)
+(defun plz-media-type-decode-coding-string (media-type string)
   "Decode the STRING according to the MEDIA-TYPE."
   (if-let (coding-system (plz-media-type-coding-system media-type))
       (decode-coding-string string coding-system)
@@ -261,7 +261,7 @@ body.  It is used as the default media type processor.")
   (ignore media-type)
   (save-excursion
     (goto-char (process-mark process))
-    (insert (plz-media-type-decode-string media-type (plz-response-body chunk)))
+    (insert (plz-media-type-decode-coding-string media-type (plz-response-body chunk)))
     (set-marker (process-mark process) (point))))
 
 ;; Content Type: application/json
