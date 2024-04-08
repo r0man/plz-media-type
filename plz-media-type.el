@@ -83,6 +83,12 @@ response will not be decoded.")
       (coding-system-from-name charset)
     (oref media-type coding-system)))
 
+(defun plz-media-type-decode-coding-string (media-type string)
+  "Decode STRING which is encoded in the coding system of MEDIA-TYPE."
+  (if-let (coding-system (plz-media-type-coding-system media-type))
+      (decode-coding-string string coding-system)
+    string))
+
 (defun plz-media-type-name (media-type)
   "Return the name of the MEDIA-TYPE as a string."
   (with-slots (type subtype) media-type
@@ -93,16 +99,16 @@ response will not be decoded.")
   (intern (plz-media-type-name media-type)))
 
 (cl-defgeneric plz-media-type-else (media-type error)
-  "Transform the ERROR into a format suitable for MEDIA-TYPE.")
+  "Transform and handle the ERROR according to MEDIA-TYPE.")
 
 (cl-defgeneric plz-media-type-then (media-type response)
-  "Transform the RESPONSE into a format suitable for MEDIA-TYPE.")
+  "Transform and handle the RESPONSE according to MEDIA-TYPE.")
 
 (cl-defgeneric plz-media-type-process (media-type process chunk)
   "Process the CHUNK according to MEDIA-TYPE using PROCESS.")
 
 (cl-defmethod plz-media-type-else ((_ (eql nil)) error)
-  "Transform the ERROR into a format suitable for MEDIA-TYPE."
+  "Transform and handle the ERROR according to MEDIA-TYPE."
   error)
 
 (defun plz-media-type--parse (header)
@@ -140,12 +146,6 @@ response will not be decoded.")
   (let ((media-type (plz-media-type--content-type response)))
     (clone (plz-media-type--find media-types media-type)
            :parameters (oref media-type parameters))))
-
-(defun plz-media-type-decode-coding-string (media-type string)
-  "Decode the STRING according to the MEDIA-TYPE."
-  (if-let (coding-system (plz-media-type-coding-system media-type))
-      (decode-coding-string string coding-system)
-    string))
 
 (defvar-local plz-media-type--current nil
   "The media type of the process buffer.")
