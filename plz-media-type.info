@@ -45,7 +45,6 @@ Usage
 
 * Quick Start::
 * Media Types::
-* Error Handling::
 
 Media Types
 
@@ -108,7 +107,6 @@ These classes determine how the response is processed.
 
 * Quick Start::
 * Media Types::
-* Error Handling::
 
 
 File: README.info,  Node: Quick Start,  Next: Media Types,  Up: Usage
@@ -147,7 +145,7 @@ body.
                        (title . "Sample Slide Show"))))
 
 
-File: README.info,  Node: Media Types,  Next: Error Handling,  Prev: Quick Start,  Up: Usage
+File: README.info,  Node: Media Types,  Prev: Quick Start,  Up: Usage
 
 2.2 Media Types
 ===============
@@ -393,22 +391,6 @@ does not parse the response body in any way.
                      "{\n  \"slideshow\": {\n    \"author\": \"Yours Truly\", \n    \"date\": \"date of publication\", \n    \"slides\": [\n      {\n        \"title\": \"Wake up to WonderWidgets!\", \n        \"type\": \"all\"\n      }, \n      {\n        \"items\": [\n          \"Why <em>WonderWidgets</em> are great\", \n          \"Who <em>buys</em> WonderWidgets\"\n        ], \n        \"title\": \"Overview\", \n        \"type\": \"all\"\n      }\n    ], \n    \"title\": \"Sample Slide Show\"\n  }\n}\n")
 
 
-File: README.info,  Node: Error Handling,  Prev: Media Types,  Up: Usage
-
-2.3 Error Handling
-==================
-
-This library uses a process filter to handle streaming HTTP responses
-retrieved with curl.  Media types that stream data typically trigger
-callbacks that execute user-defined code.  If an error occurs within
-this code, the process will be terminated.  Synchronous requests will
-signal a ‘plz-media-type-filter-error’ with the error message, HTTP
-response, and cause included as error data.  Asynchronous requests will
-receive a ‘plz-media-type-filter-error’ structure in the ‘ELSE’
-callback.  This structure, derived from ‘plz-error’, contains an
-additional ‘cause’ slot.
-
-
 File: README.info,  Node: Credits,  Next: License,  Prev: Usage,  Up: Top
 
 3 Credits
@@ -447,21 +429,20 @@ GPLv3
 
 Tag Table:
 Node: Top225
-Node: Installation1555
-Node: GNU ELPA1687
-Node: Usage1941
-Node: Quick Start2915
-Node: Media Types4493
-Node: JSON5850
-Node: Newline Delimited JSON Stream7765
-Node: JSON Array Stream9011
-Node: XML9821
-Node: HTML12026
-Node: Octet Stream16903
-Node: Error Handling18238
-Node: Credits18946
-Node: Copyright assignment19209
-Node: License19793
+Node: Installation1536
+Node: GNU ELPA1668
+Node: Usage1922
+Node: Quick Start2877
+Node: Media Types4455
+Node: JSON5789
+Node: Newline Delimited JSON Stream7704
+Node: JSON Array Stream8950
+Node: XML9760
+Node: HTML11965
+Node: Octet Stream16842
+Node: Credits18177
+Node: Copyright assignment18440
+Node: License19024
 
 End Tag Table
 
