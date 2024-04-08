@@ -29,7 +29,6 @@ media type formats.
 - [[#usage][Usage]]
   - [[#quick-start][Quick Start]]
   - [[#media-types][Media Types]]
-  - [[#error-handling][Error Handling]]
 - [[#credits][Credits]]
   - [[#copyright-assignment][Copyright assignment]]
 :END:
@@ -334,18 +333,6 @@ does not parse the response body in any way.
                  (access-control-allow-credentials . "true"))
                 "{\n  \"slideshow\": {\n    \"author\": \"Yours Truly\", \n    \"date\": \"date of publication\", \n    \"slides\": [\n      {\n        \"title\": \"Wake up to WonderWidgets!\", \n        \"type\": \"all\"\n      }, \n      {\n        \"items\": [\n          \"Why <em>WonderWidgets</em> are great\", \n          \"Who <em>buys</em> WonderWidgets\"\n        ], \n        \"title\": \"Overview\", \n        \"type\": \"all\"\n      }\n    ], \n    \"title\": \"Sample Slide Show\"\n  }\n}\n")
 #+end_src
-
-** Error Handling
-
-This library uses a process filter to handle streaming HTTP responses
-retrieved with curl. Media types that stream data typically trigger
-callbacks that execute user-defined code. If an error occurs within
-this code, the process will be terminated. Synchronous requests will
-signal a ~plz-media-type-filter-error~ with the error message, HTTP
-response, and cause included as error data. Asynchronous requests will
-receive a ~plz-media-type-filter-error~ structure in the ~ELSE~
-callback. This structure, derived from ~plz-error~, contains an
-additional ~cause~ slot.
 
 * Credits
 
