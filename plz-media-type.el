@@ -540,6 +540,17 @@ parsing the HTTP response body with the
      (then 'sync)
      (timeout plz-timeout))
   "Request METHOD from URL with curl.
+
+This function works in a similar way as the `plz' function, with
+the additional functionality of handling streaming and
+non-streaming media types with the :as (media-types MEDIA-TYPES)
+option.  Setting a process :filter by the user is not supported.
+Instead this function will always install its own process filter
+that will process the response until the HTTP headers arrived.
+Once the headers arrived it will hand over control to a media
+type based on the content type header of the response.  The media
+type is responsible for processing the HTTP body.
+
 Return the curl process object or, for a synchronous request, the
 selected result.
 
