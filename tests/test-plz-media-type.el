@@ -103,33 +103,33 @@
     (should (equal 200 (plz-response-status response)))
     (should (equal 'top (car (plz-response-body response))))))
 
-(ert-deftest test-plz-media-type-parse ()
-  (should (null (plz-media-type-parse nil)))
-  (should (null (plz-media-type-parse "")))
+(ert-deftest test-plz-media-type--parse ()
+  (should (null (plz-media-type--parse nil)))
+  (should (null (plz-media-type--parse "")))
   (should (equal (plz-media-type :type 'text :subtype 'html)
-                 (plz-media-type-parse "text/html")))
+                 (plz-media-type--parse "text/html")))
   (should (equal (plz-media-type
                   :type 'text
                   :subtype 'html
                   :parameters '(("charset" . "UTF-8")))
-                 (plz-media-type-parse "text/html;charset=UTF-8")))
+                 (plz-media-type--parse "text/html;charset=UTF-8")))
   (should (equal (plz-media-type
                   :type 'text
                   :subtype 'html
                   :parameters '(("charset" . "UTF-8")
                                 ("boundary" . "AaB03x\"")))
-                 (plz-media-type-parse "text/html; charset=UTF-8; boundary=\"AaB03x\""))))
+                 (plz-media-type--parse "text/html; charset=UTF-8; boundary=\"AaB03x\""))))
 
 (ert-deftest test-plz-media-type-charset ()
-  (let ((media-type (plz-media-type-parse "text/html; charset=UTF-8")))
+  (let ((media-type (plz-media-type--parse "text/html; charset=UTF-8")))
     (should (equal "UTF-8" (plz-media-type-charset media-type)))))
 
 (ert-deftest test-plz-media-type-coding-system ()
-  (let ((media-type (plz-media-type-parse "text/html")))
+  (let ((media-type (plz-media-type--parse "text/html")))
     (should (null (plz-media-type-coding-system media-type))))
-  (let ((media-type (plz-media-type-parse "text/html; charset=UTF-8")))
+  (let ((media-type (plz-media-type--parse "text/html; charset=UTF-8")))
     (should (equal 'utf-8 (plz-media-type-coding-system media-type))))
-  (let ((media-type (plz-media-type-parse "text/html; charset=us-ascii")))
+  (let ((media-type (plz-media-type--parse "text/html; charset=us-ascii")))
     (should (equal 'us-ascii (plz-media-type-coding-system media-type)))))
 
 (ert-deftest test-plz-media-type-of-response ()
@@ -143,7 +143,7 @@
     (should (equal 'us-ascii (plz-media-type-coding-system media-type)))))
 
 (ert-deftest test-plz-media-type-symbol ()
-  (let ((media-type (plz-media-type-parse "text/html")))
+  (let ((media-type (plz-media-type--parse "text/html")))
     (should (equal 'text/html (plz-media-type-symbol media-type)))))
 
 (ert-deftest test-plz-media-type-request:application/octet-stream:stream ()

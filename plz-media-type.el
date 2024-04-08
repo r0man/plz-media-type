@@ -105,11 +105,8 @@ response will not be decoded.")
   "Transform the ERROR into a format suitable for MEDIA-TYPE."
   error)
 
-(defun plz-media-type-parse (header)
-  "Parse the Content-Type HEADER.
-
-Return a cons cell where the car is the MIME type, and the cdr is
-an alist of parameters."
+(defun plz-media-type--parse (header)
+  "Parse the Content-Type HEADER and return a `plz-media-type' instance."
   (unless (or (null header) (string-blank-p header))
     (let* ((components (split-string header ";"))
            (mime-type (string-trim (car components)))
@@ -130,7 +127,7 @@ an alist of parameters."
   "Return the content type header of RESPONSE, or nil if it's not set."
   (let ((headers (plz-response-headers response)))
     (when-let (header (cdr (assoc 'content-type headers)))
-      (plz-media-type-parse header))))
+      (plz-media-type--parse header))))
 
 (defun plz-media--type-find (media-types media-type)
   "Lookup the MEDIA-TYPE in MEDIA-TYPES."
