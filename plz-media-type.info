@@ -374,7 +374,7 @@ File: README.info,  Node: Octet Stream,  Prev: HTML,  Up: Media Types
 ------------------
 
 The ‘plz-media-type:application/octet-stream’ media type class handles
-any other response and is used as the default media type hanlder.  It
+any other response and is used as the default media type handler.  It
 does not parse the response body in any way.
 
      (plz-media-type-request

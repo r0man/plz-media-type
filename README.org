@@ -313,7 +313,7 @@ responses. It parses the response body using
 *** Octet Stream
 
 The ~plz-media-type:application/octet-stream~ media type class handles
-any other response and is used as the default media type hanlder. It
+any other response and is used as the default media type handler. It
 does not parse the response body in any way.
 
 #+BEGIN_SRC elisp :exports both :results value code :cache yes
