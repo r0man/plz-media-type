@@ -72,6 +72,19 @@ parameter in the content type header, or the coding-sytem of the
 media type.  If the coding system of a media type is nil, the
 response will not be decoded.")
 
+(cl-defgeneric plz-media-type-else (media-type error)
+  "Transform and handle the ERROR according to MEDIA-TYPE.")
+
+(cl-defgeneric plz-media-type-then (media-type response)
+  "Transform and handle the RESPONSE according to MEDIA-TYPE.")
+
+(cl-defgeneric plz-media-type-process (media-type process chunk)
+  "Process the CHUNK according to MEDIA-TYPE using PROCESS.")
+
+(cl-defmethod plz-media-type-else ((_ (eql nil)) error)
+  "Transform and handle the ERROR according to MEDIA-TYPE."
+  error)
+
 (defun plz-media-type-charset (media-type)
   "Return the character set of the MEDIA-TYPE."
   (with-slots (parameters) media-type
@@ -98,18 +111,11 @@ response will not be decoded.")
   "Return the name of the MEDIA-TYPE as a symbol."
   (intern (plz-media-type-name media-type)))
 
-(cl-defgeneric plz-media-type-else (media-type error)
-  "Transform and handle the ERROR according to MEDIA-TYPE.")
-
-(cl-defgeneric plz-media-type-then (media-type response)
-  "Transform and handle the RESPONSE according to MEDIA-TYPE.")
-
-(cl-defgeneric plz-media-type-process (media-type process chunk)
-  "Process the CHUNK according to MEDIA-TYPE using PROCESS.")
-
-(cl-defmethod plz-media-type-else ((_ (eql nil)) error)
-  "Transform and handle the ERROR according to MEDIA-TYPE."
-  error)
+(defun plz-media-type-of-response (media-types response)
+  "Lookup the content type of RESPONSE in MEDIA-TYPES."
+  (let ((media-type (plz-media-type--content-type response)))
+    (clone (plz-media-type--find media-types media-type)
+           :parameters (oref media-type parameters))))
 
 (defun plz-media-type--parse (header)
   "Parse the Content-Type HEADER and return a `plz-media-type' instance."
@@ -140,12 +146,6 @@ response will not be decoded.")
   (or (alist-get (plz-media-type-symbol media-type) media-types)
       (alist-get t media-types)
       (plz-media-type:application/octet-stream)))
-
-(defun plz-media-type--of-response (media-types response)
-  "Lookup the content type of RESPONSE in MEDIA-TYPES."
-  (let ((media-type (plz-media-type--content-type response)))
-    (clone (plz-media-type--find media-types media-type)
-           :parameters (oref media-type parameters))))
 
 (defvar-local plz-media-type--current nil
   "The media type of the process buffer.")
@@ -216,7 +216,7 @@ STRING which is output just received from the process."
             (goto-char (point-min))
             (when-let (chunk (plz-media-type--parse-response))
               (delete-region (point) (point-max))
-              (let ((media-type (plz-media-type--of-response media-types chunk)))
+              (let ((media-type (plz-media-type-of-response media-types chunk)))
                 (setq-local plz-media-type--current media-type)
                 (setq-local plz-media-type--response
                             (make-plz-response
@@ -506,7 +506,7 @@ parsing the HTTP response body with the
             (cond
              ((plz-error-response plzerror)
               (let ((response (plz-error-response plzerror)))
-                (if-let (media-type (plz-media-type--of-response media-types response))
+                (if-let (media-type (plz-media-type-of-response media-types response))
                     (list msg (with-temp-buffer
                                 (when-let (body (plz-response-body response))
                                   (insert body)
