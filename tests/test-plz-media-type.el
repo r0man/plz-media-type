@@ -398,8 +398,8 @@
       (should (plz-error-p error))
       (should (null (plz-error-message error)))
       (should (null (plz-error-response error)))
-      (equal '(6 . "Couldn't resolve host. The given remote host was not resolved.")
-             (plz-error-curl-error error)))))
+      (should (equal '(6 . "Couldn't resolve host. The given remote host was not resolved.")
+                     (plz-error-curl-error error))))))
 
 ;;;; Footer
 
