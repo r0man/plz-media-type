@@ -1,7 +1,5 @@
 *.elc
-/scratch.el
 .#*
-/sandbox/
 /.sandbox/
-/worktrees/
-/vendor/
+/sandbox/
+/scratch.el

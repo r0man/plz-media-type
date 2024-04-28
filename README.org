@@ -2,10 +2,15 @@
 
 #+PROPERTY: LOGGING nil
 
-# Note: This readme works with the org-make-toc
-# <https://github.com/alphapapa/org-make-toc> package, which
-# automatically updates the table of contents.
+# NOTE: It would be preferable to put these at the bottom of the file under the export options heading, but it seems that "TEXINFO_DIR_CATEGORY" only works at the top of the file.
+#+EXPORT_FILE_NAME: plz-media-type.texi
+#+TEXINFO_DIR_CATEGORY: Emacs
+#+TEXINFO_DIR_TITLE: Plz Media Types: (plz-media-type)
+#+TEXINFO_DIR_DESC: Media Type extension for plz.el
 
+# Note: This readme works with the org-make-toc <https://github.com/alphapapa/org-make-toc> package, which automatically updates the table of contents.
+
+[[http://www.gnu.org/licenses/gpl-3.0.txt][https://img.shields.io/badge/license-GPL_3-green.svg]]
 [[http://elpa.gnu.org/packages/plz-media-type.html][http://elpa.gnu.org/packages/plz-media-type.svg]]
 [[https://github.com/r0man/plz-media-type/actions/workflows/test.yml][https://github.com/r0man/plz-media-type/actions/workflows/test.yml/badge.svg]]
 
@@ -30,7 +35,7 @@ media type formats.
   - [[#quick-start][Quick Start]]
   - [[#media-types][Media Types]]
 - [[#credits][Credits]]
-  - [[#copyright-assignment][Copyright assignment]]
+- [[#copyright-assignment][Copyright assignment]]
 :END:
 
 * Installation
@@ -110,14 +115,14 @@ which content type header values trigger their use. The ~Stream~
 column specifies whether the class consumes data in a streaming or
 non-streaming way.
 
-| EIEIO Class                               | Content Type               | Default | Stream |
-|-------------------------------------------+----------------------------+---------+--------|
-| ~plz-media-type:application/json-array~   | -                          | No      | Yes    |
-| ~plz-media-type:application/json~         | ~application/json~         | Yes     | No     |
-| ~plz-media-type:application/octet-stream~ | ~application/octet-stream~ | Yes     | No     |
-| ~plz-media-type:application/x-ndjson~     | -                          | No      | Yes    |
-| ~plz-media-type:application/xml~          | ~application/xml~          | Yes     | No     |
-| ~plz-media-type:text/html~                | ~text/html~                | Yes     | No     |
+| EIEIO Class                             | Content Type             | Default | Stream |
+|-----------------------------------------+--------------------------+---------+--------|
+| plz-media-type:application/json-array   | -                        | No      | Yes    |
+| plz-media-type:application/json         | application/json         | Yes     | No     |
+| plz-media-type:application/octet-stream | application/octet-stream | Yes     | No     |
+| plz-media-type:application/x-ndjson     | -                        | No      | Yes    |
+| plz-media-type:application/xml          | application/xml          | Yes     | No     |
+| plz-media-type:text/html                | text/html                | Yes     | No     |
 
 *** JSON
 
@@ -338,7 +343,7 @@ does not parse the response body in any way.
 
 - Thanks to [[https://github.com/ahyatt][ahyatt]] and [[https://github.com/alphapapa][alphapapa]] for their help and advice.
 
-** Copyright assignment
+* Copyright assignment
 
 This package is part of [[https://www.gnu.org/software/emacs/][GNU Emacs]], being distributed in [[https://elpa.gnu.org/][GNU ELPA]].
 Contributions to this project must follow GNU guidelines, which means
@@ -354,45 +359,25 @@ to the FSF.  Contributors who wish to do so may contact
 
 GPLv3
 
-* COMMENT Export setup :noexport:
+* COMMENT Export setup                                             :noexport:
 :PROPERTIES:
 :TOC:      :ignore (this descendants)
 :END:
 
-# Copied from org-super-agenda's readme, in which much was borrowed
-# from Org's =org-manual.org=.
+# Copied from org-super-agenda's readme, in which much was borrowed from Org's =org-manual.org=.
 
 #+OPTIONS: broken-links:t *:t
 
 ** Info export options
 
-#+TEXINFO_DIR_CATEGORY: Emacs
-#+TEXINFO_DIR_TITLE: Plz Event Source: (plz-media-type)
-#+TEXINFO_DIR_DESC: A plz.el media type to handle Server-Sent Events
-
-# NOTE: We could use these, but that causes a pointless error,
-# "org-compile-file: File "..README.info" wasn't produced...", so we
-# just rename the files in the after-save-hook instead.
-
-# #+TEXINFO_FILENAME: plz-media-type.info
-# #+EXPORT_FILE_NAME: plz-media-type.texi
+# NOTE: These are moved to the top of the file.
 
 ** File-local variables
 
-# NOTE: Setting org-comment-string buffer-locally is a nasty hack to
-# work around GitHub's org-ruby's HTML rendering, which does not
-# respect noexport tags.  The only way to hide this tree from its
-# output is to use the COMMENT keyword, but that prevents Org from
-# processing the export options declared in it.  So since these
-# file-local variables don't affect org-ruby, wet set
-# org-comment-string to an unused keyword, which prevents Org from
-# deleting this tree from the export buffer, which allows it to find
-# the export options in it.  And since org-export does respect the
-# noexport tag, the tree is excluded from the info page.
+# NOTE: Setting org-comment-string buffer-locally is a nasty hack to work around GitHub's org-ruby's HTML rendering, which does not respect noexport tags.  The only way to hide this tree from its output is to use the COMMENT keyword, but that prevents Org from processing the export options declared in it.  So since these file-local variables don't affect org-ruby, wet set org-comment-string to an unused keyword, which prevents Org from deleting this tree from the export buffer, which allows it to find the export options in it.  And since org-export does respect the noexport tag, the tree is excluded from the info page.
 
 # Local Variables:
 # eval: (require 'org-make-toc)
-# after-save-hook: (lambda nil (when (and (require 'ox-texinfo nil t) (org-texinfo-export-to-info)) (delete-file "README.texi") (rename-file "README.info" "plz-media-type.info" t)))
 # before-save-hook: org-make-toc
 # org-export-with-properties: ()
 # org-export-with-title: t

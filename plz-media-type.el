@@ -1,4 +1,4 @@
-;;; plz-media-type.el --- plz content types -*- lexical-binding: t; -*-
+;;; plz-media-type.el --- Plz Media Types -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2019-2023  Free Software Foundation, Inc.
 
