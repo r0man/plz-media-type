@@ -109,12 +109,35 @@ temporary filename is used."
 
 (defun plz-media-type-test-save-mock-response (buffer filename)
   "Write the plz HTTP response in BUFFER to FILENAME."
-  (let ((filename (expand-file-name filename)))
-    (with-current-buffer buffer
-      (widen)
-      (make-directory (file-name-directory filename) t)
-      (write-region (point-min) (point-max) filename)
-      filename)))
+  (with-current-buffer buffer
+    (widen)
+    (make-directory (file-name-directory filename) t)
+    (write-region (point-min) (point-max) filename)
+    filename))
+
+(cl-defun plz-media-type-test-save-request
+    (method
+     url
+     &rest rest
+     &key headers body filename noquery
+     (body-type 'text)
+     (connect-timeout plz-connect-timeout)
+     (decode t decode-s)
+     (timeout plz-timeout))
+  (let ((filename (expand-file-name (or filename (make-temp-name "plz-media-type")))))
+    (plz method url
+      :as 'buffer
+      :body body
+      :body-type body-type
+      :connect-timeout connect-timeout
+      :decode decode
+      :else (lambda (_)
+              (plz-media-type-test-save-mock-response (current-buffer) filename))
+      :headers headers
+      :noquery noquery
+      :timeout timeout
+      :then (lambda (_)
+              (plz-media-type-test-save-mock-response (current-buffer) filename)))))
 
 (defmacro plz-media-type-test-with-mock-response (filename &rest body)
   "Evaluate BODY with a mocked HTTP response from FILENAME."

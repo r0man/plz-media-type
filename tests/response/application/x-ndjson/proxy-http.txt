@@ -1,0 +1,13 @@
+HTTP/1.1 200 OK
+Via: 1.1 tinyproxy (tinyproxy/1.11.0)
+Date: Fri, 07 Jun 2024 10:00:33 GMT
+Content-Type: application/json
+Server: gunicorn/19.9.0
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+
+{"url": "http://httpbin.org/stream/5", "args": {}, "headers": {"Host": "httpbin.org", "X-Amzn-Trace-Id": "Root=1-6662da41-6fd34cf116cc64ea50c16c0b", "User-Agent": "curl/7.81.0", "Accept": "*/*", "Accept-Encoding": "deflate, gzip, br, zstd"}, "origin": "80.187.69.180", "id": 0}
+{"url": "http://httpbin.org/stream/5", "args": {}, "headers": {"Host": "httpbin.org", "X-Amzn-Trace-Id": "Root=1-6662da41-6fd34cf116cc64ea50c16c0b", "User-Agent": "curl/7.81.0", "Accept": "*/*", "Accept-Encoding": "deflate, gzip, br, zstd"}, "origin": "80.187.69.180", "id": 1}
+{"url": "http://httpbin.org/stream/5", "args": {}, "headers": {"Host": "httpbin.org", "X-Amzn-Trace-Id": "Root=1-6662da41-6fd34cf116cc64ea50c16c0b", "User-Agent": "curl/7.81.0", "Accept": "*/*", "Accept-Encoding": "deflate, gzip, br, zstd"}, "origin": "80.187.69.180", "id": 2}
+{"url": "http://httpbin.org/stream/5", "args": {}, "headers": {"Host": "httpbin.org", "X-Amzn-Trace-Id": "Root=1-6662da41-6fd34cf116cc64ea50c16c0b", "User-Agent": "curl/7.81.0", "Accept": "*/*", "Accept-Encoding": "deflate, gzip, br, zstd"}, "origin": "80.187.69.180", "id": 3}
+{"url": "http://httpbin.org/stream/5", "args": {}, "headers": {"Host": "httpbin.org", "X-Amzn-Trace-Id": "Root=1-6662da41-6fd34cf116cc64ea50c16c0b", "User-Agent": "curl/7.81.0", "Accept": "*/*", "Accept-Encoding": "deflate, gzip, br, zstd"}, "origin": "80.187.69.180", "id": 4}

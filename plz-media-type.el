@@ -173,6 +173,21 @@ response will not be decoded.")
                                     (list handler msg))
                 (timer-activate timer))))
 
+(defun plz-media-type--skip-proxy-headers ()
+  "Skip proxy headers in current buffer."
+  (when (looking-at plz-http-response-status-line-regexp)
+    (let* ((status-code (string-to-number (match-string 2)))
+           (reason-phrase (match-string 3)))
+      (when (and (equal 200 status-code)
+                 (equal "Connection established" reason-phrase))
+        (re-search-forward "\r\n\r\n" nil t)))))
+
+(defun plz-media-type--skip-redirect-headers ()
+  "Skip HTTP redirect headers in current buffer."
+  (when (and (looking-at plz-http-response-status-line-regexp)
+             (member (string-to-number (match-string 2)) '(301 302 303 307 308)))
+    (re-search-forward "\r\n\r\n" nil t)))
+
 (defun plz-media-type--parse-headers ()
   "Parse the HTTP response headers in the current buffer."
   (forward-line 1)
@@ -187,15 +202,20 @@ response will not be decoded.")
 (cl-defun plz-media-type--parse-response ()
   "Parse the response in the current buffer."
   (when (re-search-forward plz-http-end-of-headers-regexp nil t)
-    (let ((end-of-headers (point)))
-      (goto-char (point-min))
-      (when (looking-at plz-http-response-status-line-regexp)
-        (prog1 (make-plz-response
-                :version (string-to-number (match-string 1))
-                :status (string-to-number (match-string 2))
-                :headers (plz-media-type--parse-headers)
-                :body (buffer-substring end-of-headers (point-max)))
-          (goto-char end-of-headers))))))
+    (goto-char (point-min))
+    (plz-media-type--skip-proxy-headers)
+    (while (plz-media-type--skip-redirect-headers))
+    (let ((start-of-response (point)))
+      (when (re-search-forward plz-http-end-of-headers-regexp nil t)
+        (let ((end-of-headers (point)))
+          (goto-char start-of-response)
+          (when (looking-at plz-http-response-status-line-regexp)
+            (prog1 (make-plz-response
+                    :version (string-to-number (match-string 1))
+                    :status (string-to-number (match-string 2))
+                    :headers (plz-media-type--parse-headers)
+                    :body (buffer-substring end-of-headers (point-max)))
+              (goto-char end-of-headers))))))))
 
 (defun plz-media-type-process-filter (process media-types string)
   "The process filter that handles different content types.
