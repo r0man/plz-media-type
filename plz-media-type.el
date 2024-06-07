@@ -537,13 +537,12 @@ parsing the HTTP response body with the
 (cl-defun plz-media-type-request
     (method
      url
-     &rest rest &key headers body else finally noquery
+     &rest rest &key headers body else finally noquery timeout
      (as 'string)
      (body-type 'text)
      (connect-timeout plz-connect-timeout)
      (decode t decode-s)
-     (then 'sync)
-     (timeout plz-timeout))
+     (then 'sync))
   "Request METHOD from URL with curl.
 
 This function works in a similar way as the `plz' function, with
@@ -643,8 +642,8 @@ THEN or ELSE, as appropriate.  For synchronous requests, this
 argument is ignored.
 
 CONNECT-TIMEOUT and TIMEOUT are a number of seconds that limit
-how long it takes to connect to a host and to receive a response
-from a host, respectively.
+how long it takes to connect to a host and to receive a complete
+response from a host, respectively.
 
 NOQUERY is passed to `make-process', which see.
 
