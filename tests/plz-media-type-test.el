@@ -119,11 +119,10 @@ temporary filename is used."
     (method
      url
      &rest rest
-     &key headers body filename noquery
+     &key headers body filename noquery timeout
      (body-type 'text)
      (connect-timeout plz-connect-timeout)
-     (decode t decode-s)
-     (timeout plz-timeout))
+     (decode t decode-s))
   (let ((filename (expand-file-name (or filename (make-temp-name "plz-media-type")))))
     (plz method url
       :as 'buffer
