@@ -14,5 +14,5 @@ types, including JSON, XML, HTML, and binary data. It is used in the
 media type formats.
 
 - Package name (GNU ELPA): plz-media-type
-- Official manual: [[https://github.com/r0man/plz-media-type/blob/main/plz-media-type.org][https://github.com/r0man/plz-media-type/blob/main/plz-media-type.org]]
+- Official manual: [[https://r0man.github.io/plz-media-type/plz-media-type.html][https://r0man.github.io/plz-media-type/plz-media-type.html]]
 - Git repository: [[https://github.com/r0man/plz-media-type][https://github.com/r0man/plz-media-type]]
