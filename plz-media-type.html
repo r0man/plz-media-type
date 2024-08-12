@@ -1,0 +1,773 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2024-08-12 Mon 18:48 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>plz-media-type</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Docker image runner" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans">
+<style> body { color: #4a4a4a; font-family: 'Google Sans', sans-serif;  text-align: justify; } </style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">plz-media-type</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org3c4e88d">1. Installation</a>
+<ul>
+<li><a href="#org2c569d5">1.1. GNU ELPA</a></li>
+</ul>
+</li>
+<li><a href="#org59a2843">2. Usage</a>
+<ul>
+<li><a href="#orgeb24d76">2.1. Quick Start</a></li>
+<li><a href="#org0fa2a9d">2.2. Media Types</a>
+<ul>
+<li><a href="#org453b7f5">2.2.1. JSON</a></li>
+<li><a href="#orgfe0929c">2.2.2. Newline Delimited JSON Stream</a></li>
+<li><a href="#org4a7c467">2.2.3. JSON Array Stream</a></li>
+<li><a href="#orgbb108ac">2.2.4. XML</a></li>
+<li><a href="#org2c2b19f">2.2.5. HTML</a></li>
+<li><a href="#org8df3522">2.2.6. Octet Stream</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgcd43740">3. Credits</a></li>
+<li><a href="#org56185a1">4. Copyright assignment</a></li>
+<li><a href="#orgcdbab6b">5. License</a></li>
+</ul>
+</div>
+</div>
+<p>
+<code>plz-media-type</code> is an Emacs Lisp library that enhances MIME type
+handling for HTTP requests within Emacs. It leverages the <a href="https://github.com/alphapapa/plz.el">plz.el</a> HTTP
+library for networking calls and introduces a mechanism to process
+responses based on the content type header. This library defines
+various classes and methods for parsing and processing standard MIME
+types, including JSON, XML, HTML, and binary data. It is used in the
+<a href="https://github.com/ahyatt/llm">LLM</a> library to handle decoding of various streaming and non-streaming
+media type formats.
+</p>
+
+<div id="outline-container-org3c4e88d" class="outline-2">
+<h2 id="org3c4e88d"><span class="section-number-2">1</span> Installation</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+
+<div id="outline-container-org2c569d5" class="outline-3">
+<h3 id="org2c569d5"><span class="section-number-3">1.1</span> GNU ELPA</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+<code>plz-media-type</code> is available in <a href="http://elpa.gnu.org/packages/plz-media-type.html">GNU ELPA</a>.  It may be installed in
+Emacs using the <code>package-install</code> command.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org59a2843" class="outline-2">
+<h2 id="org59a2843"><span class="section-number-2">2</span> Usage</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+The main function, <code>plz-media-type-request</code>, works similarly to the
+<a href="https://github.com/alphapapa/plz.el?tab=readme-ov-file#functions">plz</a> function but with an additional feature. When the <code>:as</code> option is
+set to <code>(media-types MEDIA-TYPES)</code>, the HTTP response is decoded based
+on the content type header. The <code>MEDIA-TYPES</code> association list defines
+a mapping from content type symbols to instances of media type
+classes. These classes determine how the response is processed.
+</p>
+
+<p>
+When using the media type option:
+</p>
+
+<ul class="org-ul">
+<li>Synchronous requests return a <code>plz-response</code> structure or signal an
+error.</li>
+
+<li>Asynchronous requests return a process object and pass a
+<code>plz-response</code> structure to the <code>THEN</code> callback and a <code>plz-error</code>
+structure to the <code>ELSE</code> callback.</li>
+</ul>
+</div>
+
+<div id="outline-container-orgeb24d76" class="outline-3">
+<h3 id="orgeb24d76"><span class="section-number-3">2.1</span> Quick Start</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+The <code>plz-media-types</code> variable contains a list of pre-configured media
+type mappings. The following code makes a synchronous <code>GET</code> request to
+a URL and returns a <code>plz-response</code> structure. Since the response is
+returned with the content type header set to <code>application/json</code>, the
+<code>plz-media-type:application/json</code> class will be used to decode the
+HTTP body.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(plz-media-type-request
+  'get "https://httpbin.org/json"
+  :as `(media-types ,plz-media-types))
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-elisp">#s(plz-response 2 200
+		((date . "Sun, 24 Mar 2024 10:41:18 GMT")
+		 (content-type . "application/json")
+		 (content-length . "429")
+		 (server . "gunicorn/19.9.0")
+		 (access-control-allow-origin . "*")
+		 (access-control-allow-credentials . "true"))
+		((slideshow
+		  (author . "Yours Truly")
+		  (date . "date of publication")
+		  (slides .
+			  [((title . "Wake up to WonderWidgets!")
+			    (type . "all"))
+			   ((items .
+				   ["Why &lt;em&gt;WonderWidgets&lt;/em&gt; are great" "Who &lt;em&gt;buys&lt;/em&gt; WonderWidgets"])
+			    (title . "Overview")
+			    (type . "all"))])
+		  (title . "Sample Slide Show"))))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org0fa2a9d" class="outline-3">
+<h3 id="org0fa2a9d"><span class="section-number-3">2.2</span> Media Types</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+The following table shows the media type classes provided by the
+<code>plz-media-type</code> library. The <code>Content Type</code> and <code>Default</code> columns
+indicate which media type is part of the default <code>plz-media-types</code> and
+which content type header values trigger their use. The <code>Stream</code>
+column specifies whether the class consumes data in a streaming or
+non-streaming way.
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">EIEIO Class</th>
+<th scope="col" class="org-left">Content Type</th>
+<th scope="col" class="org-left">Default</th>
+<th scope="col" class="org-left">Stream</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">plz-media-type:application/json-array</td>
+<td class="org-left">-</td>
+<td class="org-left">No</td>
+<td class="org-left">Yes</td>
+</tr>
+
+<tr>
+<td class="org-left">plz-media-type:application/json</td>
+<td class="org-left">application/json</td>
+<td class="org-left">Yes</td>
+<td class="org-left">No</td>
+</tr>
+
+<tr>
+<td class="org-left">plz-media-type:application/octet-stream</td>
+<td class="org-left">application/octet-stream</td>
+<td class="org-left">Yes</td>
+<td class="org-left">No</td>
+</tr>
+
+<tr>
+<td class="org-left">plz-media-type:application/x-ndjson</td>
+<td class="org-left">-</td>
+<td class="org-left">No</td>
+<td class="org-left">Yes</td>
+</tr>
+
+<tr>
+<td class="org-left">plz-media-type:application/xml</td>
+<td class="org-left">application/xml</td>
+<td class="org-left">Yes</td>
+<td class="org-left">No</td>
+</tr>
+
+<tr>
+<td class="org-left">plz-media-type:text/html</td>
+<td class="org-left">text/html</td>
+<td class="org-left">Yes</td>
+<td class="org-left">No</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div id="outline-container-org453b7f5" class="outline-4">
+<h4 id="org453b7f5"><span class="section-number-4">2.2.1</span> JSON</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<p>
+The <code>plz-media-type:application/json</code> media type class handles JSON
+responses. It parses the response body using <code>json-parse-buffer</code> after
+receiving the entire response.
+</p>
+
+<p>
+<b>Customization:</b>
+</p>
+
+<p>
+Instances of this class can be customized by setting the following
+slots:
+</p>
+
+<ul class="org-ul">
+<li><code>:array-type</code>: Lisp type used for arrays (<code>array</code> or <code>list</code>, default <code>array</code>)</li>
+<li><code>:false-object</code>: Object representing JSON <code>false</code> (default <code>:json-false</code>)</li>
+<li><code>:null-object</code>: Object representing JSON <code>null</code> (default <code>nil</code>)</li>
+<li><code>:object-type</code>: Lisp type used for objects (<code>hash-table</code>, <code>alist</code>, or <code>plist</code>, default <code>alist</code>)</li>
+</ul>
+
+<p>
+<b>Example:</b>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(plz-media-type-request
+  'get "https://httpbin.org/json"
+  :as `(media-types
+	((application/json
+	  . ,(plz-media-type:application/json :array-type 'list)))))
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-elisp">#s(plz-response 2 200
+		((date . "Sun, 24 Mar 2024 10:05:19 GMT")
+		 (content-type . "application/json")
+		 (content-length . "429")
+		 (server . "gunicorn/19.9.0")
+		 (access-control-allow-origin . "*")
+		 (access-control-allow-credentials . "true"))
+		((slideshow
+		  (author . "Yours Truly")
+		  (date . "date of publication")
+		  (slides
+		   ((title . "Wake up to WonderWidgets!")
+		    (type . "all"))
+		   ((items "Why &lt;em&gt;WonderWidgets&lt;/em&gt; are great" "Who &lt;em&gt;buys&lt;/em&gt; WonderWidgets")
+		    (title . "Overview")
+		    (type . "all")))
+		  (title . "Sample Slide Show"))))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgfe0929c" class="outline-4">
+<h4 id="orgfe0929c"><span class="section-number-4">2.2.2</span> Newline Delimited JSON Stream</h4>
+<div class="outline-text-4" id="text-2-2-2">
+<p>
+The <code>plz-media-type:application/x-ndjson</code> media type class handles
+newline-delimited JSON responses in a streaming fashion. It parses
+each line using <code>json-parse-buffer</code> and calls the <code>:handler</code> function
+for each decoded object. The body slot of the <code>plz-response</code> structure
+will always be <code>nil</code>.
+</p>
+
+<p>
+<b>Customization:</b>
+</p>
+
+<ul class="org-ul">
+<li><code>:handler</code>: Function called for each JSON object.</li>
+</ul>
+
+<p>
+<b>Example:</b>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(plz-media-type-request
+  'get "https://httpbin.org/stream/5"
+  :as `(media-types
+	((application/json
+	  . ,(plz-media-type:application/x-ndjson
+	      :handler (lambda (object)
+			 (message "%s" object)))))))
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-elisp">#s(plz-response 2 200
+		((date . "Sun, 24 Mar 2024 10:06:51 GMT")
+		 (content-type . "application/json")
+		 (server . "gunicorn/19.9.0")
+		 (access-control-allow-origin . "*")
+		 (access-control-allow-credentials . "true"))
+		nil)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4a7c467" class="outline-4">
+<h4 id="org4a7c467"><span class="section-number-4">2.2.3</span> JSON Array Stream</h4>
+<div class="outline-text-4" id="text-2-2-3">
+<p>
+The <code>plz-media-type:application/json-array</code> media type class handles
+JSON responses where the top-level object is an array. It parses each
+object in the array using <code>json-parse-buffer</code> and calls the <code>:handler</code>
+function for each decoded object.
+</p>
+
+<p>
+<b>Customization:</b>
+</p>
+
+<ul class="org-ul">
+<li><code>:handler</code>: Function called for each JSON object.</li>
+</ul>
+
+<p>
+<b>Example:</b>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(plz-media-type-request
+  'get "https://localhost/json-array"
+  :as `(media-types
+	((application/json
+	  . ,(plz-media-type:application/json-array
+	      :handler (lambda (object)
+			 (message "%s" object)))))))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgbb108ac" class="outline-4">
+<h4 id="orgbb108ac"><span class="section-number-4">2.2.4</span> XML</h4>
+<div class="outline-text-4" id="text-2-2-4">
+<p>
+The <code>plz-media-type:application/xml</code> media type class handles XML
+responses. It parses the response body using
+<code>libxml-parse-html-region</code> after receiving the entire response.
+</p>
+
+<p>
+<b>Customization:</b> None
+</p>
+
+<p>
+<b>Example:</b>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(plz-media-type-request
+  'get "https://httpbin.org/xml"
+  :as `(media-types ((application/xml . ,(plz-media-type:application/xml)))))
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-elisp">#s(plz-response 2 200
+		((date . "Sun, 24 Mar 2024 10:17:57 GMT")
+		 (content-type . "application/xml")
+		 (content-length . "522")
+		 (server . "gunicorn/19.9.0")
+		 (access-control-allow-origin . "*")
+		 (access-control-allow-credentials . "true"))
+		(top nil
+		     (comment nil "  A SAMPLE set of slides  ")
+		     (html nil
+			   (body nil
+				 (slideshow
+				  ((title . "Sample Slide Show")
+				   (date . "Date of publication")
+				   (author . "Yours Truly"))
+				  (comment nil " TITLE SLIDE ")
+				  (slide
+				   ((type . "all"))
+				   (title nil "Wake up to WonderWidgets!"))
+				  (comment nil " OVERVIEW ")
+				  (slide
+				   ((type . "all"))
+				   (title nil "Overview")
+				   (item nil "Why "
+					 (em nil "WonderWidgets")
+					 " are great")
+				   (item nil)
+				   (item nil "Who "
+					 (em nil "buys")
+					 " WonderWidgets")))))))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2c2b19f" class="outline-4">
+<h4 id="org2c2b19f"><span class="section-number-4">2.2.5</span> HTML</h4>
+<div class="outline-text-4" id="text-2-2-5">
+<p>
+The <code>plz-media-type:text/html</code> media type class handles HTML
+responses. It parses the response body using
+<code>libxml-parse-html-region</code> after receiving the entire response.
+</p>
+
+<p>
+<b>Customization:</b> None
+</p>
+
+<p>
+<b>Example:</b>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(plz-media-type-request
+  'get "https://httpbin.org/html"
+  :as `(media-types ((text/html . ,(plz-media-type:application/xml)))))
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-elisp">#s(plz-response 2 200
+		((date . "Sun, 24 Mar 2024 10:18:40 GMT")
+		 (content-type . "text/html; charset=utf-8")
+		 (content-length . "3741")
+		 (server . "gunicorn/19.9.0")
+		 (access-control-allow-origin . "*")
+		 (access-control-allow-credentials . "true"))
+		(html nil
+		      (head nil)
+		      (body nil "\n      "
+			    (h1 nil "Herman Melville - Moby-Dick")
+			    "\n\n      "
+			    (div nil "\n        "
+				 (p nil "\n          Availing himself of the mild, summer-cool weather that now reigned in these latitudes, and in preparation for the peculiarly active pursuits shortly to be anticipated, Perth, the begrimed, blistered old blacksmith, had not removed his portable forge to the hold again, after concluding his contributory work for Ahab's leg, but still retained it on deck, fast lashed to ringbolts by the foremast; being now almost incessantly invoked by the headsmen, and harpooneers, and bowsmen to do some little job for them; altering, or repairing, or new shaping their various weapons and boat furniture. Often he would be surrounded by an eager circle, all waiting to be served; holding boat-spades, pike-heads, harpoons, and lances, and jealously watching his every sooty movement, as he toiled. Nevertheless, this old man's was a patient hammer wielded by a patient arm. No murmur, no impatience, no petulance did come from him. Silent, slow, and solemn; bowing over still further his chronically broken back, he toiled away, as if toil were life itself, and the heavy beating of his hammer the heavy beating of his heart. And so it was.—Most miserable! A peculiar walk in this old man, a certain slight but painful appearing yawing in his gait, had at an early period of the voyage excited the curiosity of the mariners. And to the importunity of their persisted questionings he had finally given in; and so it came to pass that every one now knew the shameful story of his wretched fate. Belated, and not innocently, one bitter winter's midnight, on the road running between two country towns, the blacksmith half-stupidly felt the deadly numbness stealing over him, and sought refuge in a leaning, dilapidated barn. The issue was, the loss of the extremities of both feet. Out of this revelation, part by part, at last came out the four acts of the gladness, and the one long, and as yet uncatastrophied fifth act of the grief of his life's drama. He was an old man, who, at the age of nearly sixty, had postponedly encountered that thing in sorrow's technicals called ruin. He had been an artisan of famed excellence, and with plenty to do; owned a house and garden; embraced a youthful, daughter-like, loving wife, and three blithe, ruddy children; every Sunday went to a cheerful-looking church, planted in a grove. But one night, under cover of darkness, and further concealed in a most cunning disguisement, a desperate burglar slid into his happy home, and robbed them all of everything. And darker yet to tell, the blacksmith himself did ignorantly conduct this burglar into his family's heart. It was the Bottle Conjuror! Upon the opening of that fatal cork, forth flew the fiend, and shrivelled up his home. Now, for prudent, most wise, and economic reasons, the blacksmith's shop was in the basement of his dwelling, but with a separate entrance to it; so that always had the young and loving healthy wife listened with no unhappy nervousness, but with vigorous pleasure, to the stout ringing of her young-armed old husband's hammer; whose reverberations, muffled by passing through the floors and walls, came up to her, not unsweetly, in her nursery; and so, to stout Labor's iron lullaby, the blacksmith's infants were rocked to slumber. Oh, woe on woe! Oh, Death, why canst thou not sometimes be timely? Hadst thou taken this old blacksmith to thyself ere his full ruin came upon him, then had the young widow had a delicious grief, and her orphans a truly venerable, legendary sire to dream of in their after years; and all of them a care-killing competency.\n        ")
+				 "\n      ")
+			    "\n  ")))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8df3522" class="outline-4">
+<h4 id="org8df3522"><span class="section-number-4">2.2.6</span> Octet Stream</h4>
+<div class="outline-text-4" id="text-2-2-6">
+<p>
+The <code>plz-media-type:application/octet-stream</code> media type class handles
+any other response and is used as the default media type handler. It
+does not parse the response body in any way.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-elisp">(plz-media-type-request
+  'get "https://httpbin.org/json"
+  :as `(media-types ((t . ,(plz-media-type:application/octet-stream)))))
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-elisp">#s(plz-response 2 200
+		((date . "Sun, 24 Mar 2024 10:28:40 GMT")
+		 (content-type . "application/json")
+		 (content-length . "429")
+		 (server . "gunicorn/19.9.0")
+		 (access-control-allow-origin . "*")
+		 (access-control-allow-credentials . "true"))
+		"{\n  \"slideshow\": {\n    \"author\": \"Yours Truly\", \n    \"date\": \"date of publication\", \n    \"slides\": [\n      {\n        \"title\": \"Wake up to WonderWidgets!\", \n        \"type\": \"all\"\n      }, \n      {\n        \"items\": [\n          \"Why &lt;em&gt;WonderWidgets&lt;/em&gt; are great\", \n          \"Who &lt;em&gt;buys&lt;/em&gt; WonderWidgets\"\n        ], \n        \"title\": \"Overview\", \n        \"type\": \"all\"\n      }\n    ], \n    \"title\": \"Sample Slide Show\"\n  }\n}\n")
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcd43740" class="outline-2">
+<h2 id="orgcd43740"><span class="section-number-2">3</span> Credits</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>Thanks to <a href="https://github.com/ahyatt">ahyatt</a> and <a href="https://github.com/alphapapa">alphapapa</a> for their help and advice.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org56185a1" class="outline-2">
+<h2 id="org56185a1"><span class="section-number-2">4</span> Copyright assignment</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+This package is part of <a href="https://www.gnu.org/software/emacs/">GNU Emacs</a>, being distributed in <a href="https://elpa.gnu.org/">GNU ELPA</a>.
+Contributions to this project must follow GNU guidelines, which means
+that, as with other parts of Emacs, patches of more than a few lines
+must be accompanied by having assigned copyright for the contribution
+to the FSF.  Contributors who wish to do so may contact
+<a href="mailto:emacs-devel@gnu.org">emacs-devel@gnu.org</a> to request the assignment form.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgcdbab6b" class="outline-2">
+<h2 id="orgcdbab6b"><span class="section-number-2">5</span> License</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+GPLv3
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Docker image runner</p>
+<p class="date">Created: 2024-08-12 Mon 18:48</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
