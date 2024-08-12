@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-08-12 Mon 18:48 -->
+<!-- 2024-08-12 Mon 18:57 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>plz-media-type</title>
@@ -251,29 +251,29 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org3c4e88d">1. Installation</a>
+<li><a href="#org20963b0">1. Installation</a>
 <ul>
-<li><a href="#org2c569d5">1.1. GNU ELPA</a></li>
+<li><a href="#org4115d1a">1.1. GNU ELPA</a></li>
 </ul>
 </li>
-<li><a href="#org59a2843">2. Usage</a>
+<li><a href="#orgafb6952">2. Usage</a>
 <ul>
-<li><a href="#orgeb24d76">2.1. Quick Start</a></li>
-<li><a href="#org0fa2a9d">2.2. Media Types</a>
+<li><a href="#org5243079">2.1. Quick Start</a></li>
+<li><a href="#org8096f34">2.2. Media Types</a>
 <ul>
-<li><a href="#org453b7f5">2.2.1. JSON</a></li>
-<li><a href="#orgfe0929c">2.2.2. Newline Delimited JSON Stream</a></li>
-<li><a href="#org4a7c467">2.2.3. JSON Array Stream</a></li>
-<li><a href="#orgbb108ac">2.2.4. XML</a></li>
-<li><a href="#org2c2b19f">2.2.5. HTML</a></li>
-<li><a href="#org8df3522">2.2.6. Octet Stream</a></li>
+<li><a href="#orgdd0b39f">2.2.1. JSON</a></li>
+<li><a href="#orge92933e">2.2.2. Newline Delimited JSON Stream</a></li>
+<li><a href="#org7804b34">2.2.3. JSON Array Stream</a></li>
+<li><a href="#org0e14cc3">2.2.4. XML</a></li>
+<li><a href="#orgf05b69e">2.2.5. HTML</a></li>
+<li><a href="#org1671ca8">2.2.6. Octet Stream</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgcd43740">3. Credits</a></li>
-<li><a href="#org56185a1">4. Copyright assignment</a></li>
-<li><a href="#orgcdbab6b">5. License</a></li>
+<li><a href="#orgf772375">3. Credits</a></li>
+<li><a href="#org56f77e3">4. Copyright assignment</a></li>
+<li><a href="#orgb8bdf80">5. License</a></li>
 </ul>
 </div>
 </div>
@@ -288,13 +288,13 @@ types, including JSON, XML, HTML, and binary data. It is used in the
 media type formats.
 </p>
 
-<div id="outline-container-org3c4e88d" class="outline-2">
-<h2 id="org3c4e88d"><span class="section-number-2">1</span> Installation</h2>
+<div id="outline-container-org20963b0" class="outline-2">
+<h2 id="org20963b0"><span class="section-number-2">1</span> Installation</h2>
 <div class="outline-text-2" id="text-1">
 </div>
 
-<div id="outline-container-org2c569d5" class="outline-3">
-<h3 id="org2c569d5"><span class="section-number-3">1.1</span> GNU ELPA</h3>
+<div id="outline-container-org4115d1a" class="outline-3">
+<h3 id="org4115d1a"><span class="section-number-3">1.1</span> GNU ELPA</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 <code>plz-media-type</code> is available in <a href="http://elpa.gnu.org/packages/plz-media-type.html">GNU ELPA</a>.  It may be installed in
@@ -304,8 +304,8 @@ Emacs using the <code>package-install</code> command.
 </div>
 </div>
 
-<div id="outline-container-org59a2843" class="outline-2">
-<h2 id="org59a2843"><span class="section-number-2">2</span> Usage</h2>
+<div id="outline-container-orgafb6952" class="outline-2">
+<h2 id="orgafb6952"><span class="section-number-2">2</span> Usage</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 The main function, <code>plz-media-type-request</code>, works similarly to the
@@ -330,8 +330,8 @@ structure to the <code>ELSE</code> callback.</li>
 </ul>
 </div>
 
-<div id="outline-container-orgeb24d76" class="outline-3">
-<h3 id="orgeb24d76"><span class="section-number-3">2.1</span> Quick Start</h3>
+<div id="outline-container-org5243079" class="outline-3">
+<h3 id="org5243079"><span class="section-number-3">2.1</span> Quick Start</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 The <code>plz-media-types</code> variable contains a list of pre-configured media
@@ -373,8 +373,8 @@ HTTP body.
 </div>
 </div>
 
-<div id="outline-container-org0fa2a9d" class="outline-3">
-<h3 id="org0fa2a9d"><span class="section-number-3">2.2</span> Media Types</h3>
+<div id="outline-container-org8096f34" class="outline-3">
+<h3 id="org8096f34"><span class="section-number-3">2.2</span> Media Types</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 The following table shows the media type classes provided by the
@@ -451,8 +451,8 @@ non-streaming way.
 </table>
 </div>
 
-<div id="outline-container-org453b7f5" class="outline-4">
-<h4 id="org453b7f5"><span class="section-number-4">2.2.1</span> JSON</h4>
+<div id="outline-container-orgdd0b39f" class="outline-4">
+<h4 id="orgdd0b39f"><span class="section-number-4">2.2.1</span> JSON</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <p>
 The <code>plz-media-type:application/json</code> media type class handles JSON
@@ -512,8 +512,8 @@ slots:
 </div>
 </div>
 
-<div id="outline-container-orgfe0929c" class="outline-4">
-<h4 id="orgfe0929c"><span class="section-number-4">2.2.2</span> Newline Delimited JSON Stream</h4>
+<div id="outline-container-orge92933e" class="outline-4">
+<h4 id="orge92933e"><span class="section-number-4">2.2.2</span> Newline Delimited JSON Stream</h4>
 <div class="outline-text-4" id="text-2-2-2">
 <p>
 The <code>plz-media-type:application/x-ndjson</code> media type class handles
@@ -559,8 +559,8 @@ will always be <code>nil</code>.
 </div>
 </div>
 
-<div id="outline-container-org4a7c467" class="outline-4">
-<h4 id="org4a7c467"><span class="section-number-4">2.2.3</span> JSON Array Stream</h4>
+<div id="outline-container-org7804b34" class="outline-4">
+<h4 id="org7804b34"><span class="section-number-4">2.2.3</span> JSON Array Stream</h4>
 <div class="outline-text-4" id="text-2-2-3">
 <p>
 The <code>plz-media-type:application/json-array</code> media type class handles
@@ -594,8 +594,8 @@ function for each decoded object.
 </div>
 </div>
 
-<div id="outline-container-orgbb108ac" class="outline-4">
-<h4 id="orgbb108ac"><span class="section-number-4">2.2.4</span> XML</h4>
+<div id="outline-container-org0e14cc3" class="outline-4">
+<h4 id="org0e14cc3"><span class="section-number-4">2.2.4</span> XML</h4>
 <div class="outline-text-4" id="text-2-2-4">
 <p>
 The <code>plz-media-type:application/xml</code> media type class handles XML
@@ -654,8 +654,8 @@ responses. It parses the response body using
 </div>
 </div>
 
-<div id="outline-container-org2c2b19f" class="outline-4">
-<h4 id="org2c2b19f"><span class="section-number-4">2.2.5</span> HTML</h4>
+<div id="outline-container-orgf05b69e" class="outline-4">
+<h4 id="orgf05b69e"><span class="section-number-4">2.2.5</span> HTML</h4>
 <div class="outline-text-4" id="text-2-2-5">
 <p>
 The <code>plz-media-type:text/html</code> media type class handles HTML
@@ -700,8 +700,8 @@ responses. It parses the response body using
 </div>
 </div>
 
-<div id="outline-container-org8df3522" class="outline-4">
-<h4 id="org8df3522"><span class="section-number-4">2.2.6</span> Octet Stream</h4>
+<div id="outline-container-org1671ca8" class="outline-4">
+<h4 id="org1671ca8"><span class="section-number-4">2.2.6</span> Octet Stream</h4>
 <div class="outline-text-4" id="text-2-2-6">
 <p>
 The <code>plz-media-type:application/octet-stream</code> media type class handles
@@ -732,8 +732,8 @@ does not parse the response body in any way.
 </div>
 </div>
 
-<div id="outline-container-orgcd43740" class="outline-2">
-<h2 id="orgcd43740"><span class="section-number-2">3</span> Credits</h2>
+<div id="outline-container-orgf772375" class="outline-2">
+<h2 id="orgf772375"><span class="section-number-2">3</span> Credits</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Thanks to <a href="https://github.com/ahyatt">ahyatt</a> and <a href="https://github.com/alphapapa">alphapapa</a> for their help and advice.</li>
@@ -741,8 +741,8 @@ does not parse the response body in any way.
 </div>
 </div>
 
-<div id="outline-container-org56185a1" class="outline-2">
-<h2 id="org56185a1"><span class="section-number-2">4</span> Copyright assignment</h2>
+<div id="outline-container-org56f77e3" class="outline-2">
+<h2 id="org56f77e3"><span class="section-number-2">4</span> Copyright assignment</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 This package is part of <a href="https://www.gnu.org/software/emacs/">GNU Emacs</a>, being distributed in <a href="https://elpa.gnu.org/">GNU ELPA</a>.
@@ -755,8 +755,8 @@ to the FSF.  Contributors who wish to do so may contact
 </div>
 </div>
 
-<div id="outline-container-orgcdbab6b" class="outline-2">
-<h2 id="orgcdbab6b"><span class="section-number-2">5</span> License</h2>
+<div id="outline-container-orgb8bdf80" class="outline-2">
+<h2 id="orgb8bdf80"><span class="section-number-2">5</span> License</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 GPLv3
@@ -766,7 +766,7 @@ GPLv3
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Docker image runner</p>
-<p class="date">Created: 2024-08-12 Mon 18:48</p>
+<p class="date">Created: 2024-08-12 Mon 18:57</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
