@@ -9,7 +9,7 @@
 #+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans">
 #+HTML_HEAD: <style> html, body { height: 100%; } </style>
 #+HTML_HEAD: <style> html { display: table; margin: auto; } </style>
-#+HTML_HEAD: <style> body { color: #4a4a4a; font-family: 'Google Sans', sans-serif; display: table-cell; vertical-align: middle; } </style>
+#+HTML_HEAD: <style> body { color: #4a4a4a; font-family: 'Google Sans', sans-serif; display: table-cell; vertical-align: middle; max-width 1024px; } </style>
 #+TEXINFO_DIR_CATEGORY: Emacs
 #+TEXINFO_DIR_DESC: Media Type extension for plz.el
 #+TEXINFO_DIR_TITLE: Plz Media Types: (plz-media-type)
