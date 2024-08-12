@@ -4,9 +4,13 @@
 
 # NOTE: It would be preferable to put these at the bottom of the file under the export options heading, but it seems that "TEXINFO_DIR_CATEGORY" only works at the top of the file.
 #+EXPORT_FILE_NAME: plz-media-type.texi
+#+HTML_HEAD: <link rel="preconnect" href="https://fonts.googleapis.com">
+#+HTML_HEAD: <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+#+HTML_HEAD: <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans">
+#+HTML_HEAD: <style> body { color: #4a4a4a; font-family: 'Google Sans', sans-serif;  text-align: justify; } </style>
 #+TEXINFO_DIR_CATEGORY: Emacs
-#+TEXINFO_DIR_TITLE: Plz Media Types: (plz-media-type)
 #+TEXINFO_DIR_DESC: Media Type extension for plz.el
+#+TEXINFO_DIR_TITLE: Plz Media Types: (plz-media-type)
 
 # Note: This readme works with the org-make-toc <https://github.com/alphapapa/org-make-toc> package, which automatically updates the table of contents.
 
