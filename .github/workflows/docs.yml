@@ -1,0 +1,20 @@
+name: Docs
+
+permissions:
+  contents: write
+  pull-requests: write
+
+on:
+  push:
+    branches: [ "org-knit" ]
+  pull_request:
+    branches: [ "org-knit" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Export org files
+      uses: tecosaur/org-knit-action@v0.3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
