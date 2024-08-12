@@ -86,32 +86,6 @@ jobs:
       if: always()  # Run test even if linting fails.
       run: ./makem.sh -vv --sandbox=$SANDBOX_DIR test
 
-  docs:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
-    - uses: purcell/setup-emacs@master
-      with:
-        version: 29.4
-
-    - uses: actions/checkout@v2
-
-    - name: Install packages
-      run: |
-        sudo apt-get install curl ispell pv
-
-    - name: Initialize sandbox
-      run: |
-        SANDBOX_DIR=$(mktemp -d) || exit 1
-        echo "SANDBOX_DIR=$SANDBOX_DIR" >> $GITHUB_ENV
-        ./makem.sh -vv --sandbox=$SANDBOX_DIR --install-deps --install-linters
-
-    - name: Export org files
-      uses: tecosaur/org-knit-action@v0.3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-
 # Local Variables:
 # eval: (outline-minor-mode)
 # End:
