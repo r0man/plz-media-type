@@ -1,0 +1,24 @@
+name: Docs
+
+permissions:
+  contents: write
+  pull-requests: write
+
+on:
+  push:
+    branches: [ "org-knit" ]
+  pull_request:
+    branches: [ "org-knit" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: purcell/setup-emacs@master
+      with:
+        version: 29.4
+    - name: Export org files
+      uses: tecosaur/org-knit-action@v0.3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
