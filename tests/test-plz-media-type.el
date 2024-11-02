@@ -468,6 +468,22 @@
     (should (equal "Operation timeout." (cdr (plz-error-curl-error plz-error))))
     (should (< (time-to-seconds (time-subtract end-time start-time)) 1.1))))
 
+(plz-deftest test-plz-media-type-request-kill-process ()
+  (let* ((then) (else) (finally)
+         (calling-buffer (current-buffer))
+         (process (plz-media-type-request 'get (url "/delay/5")
+                    :as `(media-types ,plz-media-types)
+                    :else (lambda (object) (push object else))
+                    :finally (lambda () (push t finally))
+                    :then (lambda (object) (push object then)))))
+    (run-with-timer 1 nil #'kill-process process)
+    (plz-media-type-test-wait process)
+    (should (equal '(t) finally))
+    (should (equal 0 (length then)))
+    (should (equal 1 (length else)))
+    (should (buffer-live-p calling-buffer))
+    (should (not (buffer-live-p (process-buffer process))))))
+
 (ert-deftest test-plz-media-type-request-resolve-error-async ()
   (let* ((else) (finally) (then)
          (process (plz-media-type-request 'get "https://httpbinnnnnn.org/get/status/404"
