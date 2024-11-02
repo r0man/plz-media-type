@@ -676,9 +676,8 @@ not.
   (if-let (media-types (pcase as
                          (`(media-types ,media-types)
                           media-types)))
-      (let ((buffer))
-        (condition-case error
-            (let* ((plz-curl-default-args (cons "--no-buffer" plz-curl-default-args))
+      (condition-case error
+          (letrec ((plz-curl-default-args (cons "--no-buffer" plz-curl-default-args))
                    (result (plz method url
                              :as 'buffer
                              :body body
@@ -686,7 +685,6 @@ not.
                              :connect-timeout connect-timeout
                              :decode decode
                              :else (lambda (error)
-                                     (setq buffer (current-buffer))
                                      (when (or (functionp else) (symbolp else))
                                        (funcall else (plz-media-type-else
                                                       plz-media-type--current
@@ -705,18 +703,18 @@ not.
                              :then (if (symbolp then)
                                        then
                                      (lambda (_)
-                                       (setq buffer (current-buffer))
                                        (when (or (functionp then) (symbolp then))
                                          (funcall then (plz-media-type-then
                                                         plz-media-type--current
-                                                        plz-media-type--response))))))))
-              (cond ((bufferp result)
-                     (plz-media-type--handle-sync-response result))
-                    ((processp result)
-                     result)
-                    (t (user-error "Unexpected response: %s" result))))
-          ;; TODO: How to kill the buffer for sync requests that raise an error?
-          (plz-error (plz-media-type--handle-sync-error error media-types))))
+                                                        plz-media-type--response)))))))
+                   (buffer (process-buffer result)))
+            (cond ((bufferp result)
+                   (plz-media-type--handle-sync-response result))
+                  ((processp result)
+                   result)
+                  (t (user-error "Unexpected response: %s" result))))
+        ;; TODO: How to kill the buffer for sync requests that raise an error?
+        (plz-error (plz-media-type--handle-sync-error error media-types)))
     (apply #'plz (append (list method url) rest))))
 
 ;;;; Footer
