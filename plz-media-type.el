@@ -707,7 +707,7 @@ not.
                                          (funcall then (plz-media-type-then
                                                         plz-media-type--current
                                                         plz-media-type--response)))))))
-                   (buffer (process-buffer result)))
+                   (buffer (if (processp result) (process-buffer result) result)))
             (cond ((bufferp result)
                    (plz-media-type--handle-sync-response result))
                   ((processp result)
