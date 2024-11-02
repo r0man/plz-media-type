@@ -699,15 +699,14 @@ not.
   ;; FIXME(v0.8): Remove the note about error changes from the docstring.
   ;; FIXME(v0.8): Update error signals in docstring.
   (declare (indent defun))
+  (when (and plz-media-type-debug-p plz-media-type-debug-erase-buffer-p)
+    (with-current-buffer (get-buffer-create plz-media-type-debug-response-buffer)
+      (erase-buffer)))
   (if-let (media-types (pcase as
                          (`(media-types ,media-types)
                           media-types)))
-      (let ((buffer))
-        (when (and plz-media-type-debug-p plz-media-type-debug-erase-buffer-p)
-          (with-current-buffer (get-buffer-create plz-media-type-debug-response-buffer)
-            (erase-buffer)))
-        (condition-case error
-            (let* ((plz-curl-default-args (cons "--no-buffer" plz-curl-default-args))
+      (condition-case error
+          (letrec ((plz-curl-default-args (cons "--no-buffer" plz-curl-default-args))
                    (result (plz method url
                              :as 'buffer
                              :body body
@@ -715,7 +714,6 @@ not.
                              :connect-timeout connect-timeout
                              :decode decode
                              :else (lambda (error)
-                                     (setq buffer (current-buffer))
                                      (when (or (functionp else) (symbolp else))
                                        (funcall else (plz-media-type-else
                                                       plz-media-type--current
@@ -734,19 +732,20 @@ not.
                              :then (if (symbolp then)
                                        then
                                      (lambda (_)
-                                       (setq buffer (current-buffer))
                                        (when (or (functionp then) (symbolp then))
                                          (funcall then (plz-media-type-then
                                                         plz-media-type--current
-                                                        plz-media-type--response))))))))
-              (cond ((bufferp result)
-                     (plz-media-type--handle-sync-response result))
-                    ((processp result)
-                     result)
-                    (t (user-error "Unexpected response: %s" result))))
-          ;; TODO: How to kill the buffer for sync requests that raise an error?
-          (plz-error (plz-media-type--handle-sync-error error media-types))))
+                                                        plz-media-type--response)))))))
+                   (buffer (if (processp result) (process-buffer result) result)))
+            (cond ((bufferp result)
+                   (plz-media-type--handle-sync-response result))
+                  ((processp result)
+                   result)
+                  (t (user-error "Unexpected response: %s" result))))
+        ;; TODO: How to kill the buffer for sync requests that raise an error?
+        (plz-error (plz-media-type--handle-sync-error error media-types)))
     (apply #'plz (append (list method url) rest))))
+
 
 ;;;; Footer
 
