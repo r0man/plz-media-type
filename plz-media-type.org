@@ -28,6 +28,8 @@ media type formats.
 - [[#usage][Usage]]
   - [[#quick-start][Quick Start]]
   - [[#media-types][Media Types]]
+- [[#troubleshooting][Troubleshooting]]
+  - [[#debugging-http-responses][Debugging HTTP responses]]
 - [[#credits][Credits]]
 - [[#copyright-assignment][Copyright assignment]]
 :END:
@@ -332,6 +334,19 @@ does not parse the response body in any way.
                  (access-control-allow-credentials . "true"))
                 "{\n  \"slideshow\": {\n    \"author\": \"Yours Truly\", \n    \"date\": \"date of publication\", \n    \"slides\": [\n      {\n        \"title\": \"Wake up to WonderWidgets!\", \n        \"type\": \"all\"\n      }, \n      {\n        \"items\": [\n          \"Why <em>WonderWidgets</em> are great\", \n          \"Who <em>buys</em> WonderWidgets\"\n        ], \n        \"title\": \"Overview\", \n        \"type\": \"all\"\n      }\n    ], \n    \"title\": \"Sample Slide Show\"\n  }\n}\n")
 #+end_src
+
+* Troubleshooting
+
+** Debugging HTTP responses
+
+It might be useful to see the full HTTP response while developing a
+new media type format or ~plz-media-type~ is failing to parse a
+response of an HTTP request. When the ~plz-media-type-debug-p~ custom
+variable is set to a non-nil value, each chunk of the HTTP response is
+written to the buffer configured by the
+~plz-media-type-debug-response-buffer~ custom variable as it
+arrives. The buffer is cleared on each new request, unless
+~plz-media-type-debug-erase-buffer-p~ is set to a non-nil value.
 
 * Credits
 
