@@ -5,7 +5,7 @@
 ;; Author: r0man <roman@burningswell.com>
 ;; Maintainer: r0man <roman@burningswell.com>
 ;; URL: https://github.com/r0man/plz-media-type
-;; Version: 0.2.2-pre
+;; Version: 0.2.2
 ;; Package-Requires: ((emacs "26.3") (plz "0.9"))
 ;; Keywords: comm, network, http
 
