@@ -44,6 +44,29 @@
 (require 'eieio)
 (require 'plz)
 
+(defcustom plz-media-type-debug-response-buffer "*plz-media-type-response*"
+  "The name of the buffer to which the HTTP response is written to.
+
+When `plz-media-type-debug-p' is non-nil, the HTTP response will
+be written to this buffer.  The buffer will be erased on each
+HTTP request, unless configured otherwise with
+`plz-media-type-debug-erase-buffer-p'."
+  :group 'plz-media-type
+  :safe #'stringp
+  :type 'string)
+
+(defcustom plz-media-type-debug-erase-buffer-p t
+  "Whether to erase the response buffer on each new request or not."
+  :group 'plz-media-type
+  :safe #'booleanp
+  :type 'boolean)
+
+(defcustom plz-media-type-debug-p nil
+  "Whether to write the HTTP response to the debug buffer or not."
+  :group 'plz-media-type
+  :safe #'booleanp
+  :type 'boolean)
+
 (defclass plz-media-type ()
   ((coding-system
     :documentation "The coding system to use for the media type."
@@ -221,6 +244,9 @@ MEDIA-TYPES is an association list from media type to an
 instance of a content type class.
 
 STRING which is output just received from the process."
+  (when plz-media-type-debug-p
+    (with-current-buffer (get-buffer-create plz-media-type-debug-response-buffer)
+      (insert string)))
   (when (buffer-live-p (process-buffer process))
     (with-current-buffer (process-buffer process)
       (let ((moving (= (point) (process-mark process))))
@@ -677,6 +703,9 @@ not.
                          (`(media-types ,media-types)
                           media-types)))
       (let ((buffer))
+        (when (and plz-media-type-debug-p plz-media-type-debug-erase-buffer-p)
+          (with-current-buffer (get-buffer-create plz-media-type-debug-response-buffer)
+            (erase-buffer)))
         (condition-case error
             (let* ((plz-curl-default-args (cons "--no-buffer" plz-curl-default-args))
                    (result (plz method url
