@@ -44,6 +44,12 @@
 (require 'eieio)
 (require 'plz)
 
+(defcustom plz-media-type-debug-events-buffer "*plz-media-type-events*"
+  "The name of the buffer to which debug events are written to."
+  :group 'plz-media-type
+  :safe #'stringp
+  :type 'string)
+
 (defcustom plz-media-type-debug-response-buffer "*plz-media-type-response*"
   "The name of the buffer to which the HTTP response is written to.
 
@@ -61,7 +67,7 @@ HTTP request, unless configured otherwise with
   :safe #'booleanp
   :type 'boolean)
 
-(defcustom plz-media-type-debug-p nil
+(defcustom plz-media-type-debug-p t
   "Whether to write the HTTP response to the debug buffer or not."
   :group 'plz-media-type
   :safe #'booleanp
@@ -107,6 +113,33 @@ response will not be decoded.")
 (cl-defmethod plz-media-type-else ((_ (eql nil)) error)
   "Transform and handle the ERROR according to MEDIA-TYPE."
   error)
+
+(defun plz-media-type-process--bold (s)
+  "Return S in bold face."
+  (propertize s 'face 'bold))
+
+(cl-defmethod plz-media-type-else :before (media-type error)
+  "Transform and handle the ERROR according to MEDIA-TYPE."
+  (when plz-media-type-debug-p
+    (with-current-buffer (get-buffer-create plz-media-type-debug-events-buffer)
+      (insert (plz-media-type-process--bold
+               (format "plz-media-type-else: %s\n" (type-of media-type)))))))
+
+(cl-defmethod plz-media-type-then :before (media-type response)
+  "Transform and handle the RESPONSE according to MEDIA-TYPE."
+  (when plz-media-type-debug-p
+    (with-current-buffer (get-buffer-create plz-media-type-debug-events-buffer)
+      (insert (plz-media-type-process--bold
+               (format "plz-media-type-then: %s\n" (type-of media-type)))))))
+
+(cl-defmethod plz-media-type-process :before (media-type process chunk)
+  "Process the CHUNK according to MEDIA-TYPE using PROCESS."
+  (when plz-media-type-debug-p
+    (with-current-buffer (get-buffer-create plz-media-type-debug-events-buffer)
+      (insert (plz-media-type-process--bold
+               (format "plz-media-type-process: %s\n" (type-of media-type))))
+      (when-let (body (plz-response-body chunk))
+        (insert body)))))
 
 (defun plz-media-type-charset (media-type)
   "Return the character set of the MEDIA-TYPE."
@@ -704,8 +737,10 @@ not.
                           media-types)))
       (let ((buffer))
         (when (and plz-media-type-debug-p plz-media-type-debug-erase-buffer-p)
-          (with-current-buffer (get-buffer-create plz-media-type-debug-response-buffer)
-            (erase-buffer)))
+          (dolist (buffer (list plz-media-type-debug-events-buffer
+                                plz-media-type-debug-response-buffer))
+            (with-current-buffer buffer
+              (erase-buffer))))
         (condition-case error
             (let* ((plz-curl-default-args (cons "--no-buffer" plz-curl-default-args))
                    (result (plz method url
