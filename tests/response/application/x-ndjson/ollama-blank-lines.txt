@@ -1,0 +1,37 @@
+HTTP/1.1 200 OK
+Content-Type: application/x-ndjson
+Date: Tue, 12 Mar 2024 12:05:13 GMT
+Transfer-Encoding: chunked
+
+{"model":"llama2","created_at":"2024-03-12T12:05:13.747334659Z","response":"Hello","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:13.814191426Z","response":" there","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:13.880926587Z","response":"!","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:13.947866055Z","response":" It","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:14.015054376Z","response":"'","done":false}
+
+
+{"model":"llama2","created_at":"2024-03-12T12:05:14.082471215Z","response":"s","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:14.148577108Z","response":" nice","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:14.214802148Z","response":" to","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:14.281459481Z","response":" meet","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:14.350610212Z","response":" you","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:14.419490326Z","response":".","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:14.486487527Z","response":" Is","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:14.553190097Z","response":" there","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:14.623595043Z","response":" something","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:14.694458171Z","response":" I","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:14.76547139Z","response":" can","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:14.833659175Z","response":" help","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:14.903078162Z","response":" you","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:14.97368534Z","response":" with","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:15.046102396Z","response":" or","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:15.117115422Z","response":" would","done":false}
+
+
+
+{"model":"llama2","created_at":"2024-03-12T12:05:15.18784764Z","response":" you","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:15.259555212Z","response":" like","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:15.328392358Z","response":" to","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:15.398189056Z","response":" chat","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:15.467785437Z","response":"?","done":false}
+{"model":"llama2","created_at":"2024-03-12T12:05:15.535938819Z","response":"","done":true,"context":[518,25580,29962,3532,14816,29903,29958,5299,829,14816,29903,6778,13,13,10994,518,29914,25580,29962,13,10994,727,29991,739,29915,29879,7575,304,5870,366,29889,1317,727,1554,306,508,1371,366,411,470,723,366,763,304,13563,29973],"total_duration":3569916695,"load_duration":782537698,"prompt_eval_count":21,"prompt_eval_duration":998427000,"eval_count":27,"eval_duration":1788606000}

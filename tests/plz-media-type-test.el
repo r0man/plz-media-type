@@ -63,7 +63,9 @@ If running httpbin locally, set to \"http://localhost\".")
     ;; that something funny is going on...
     (cl-loop for i upto times ;; 10 seconds
              while (equal 'run (process-status process))
+             ;; TODO: sleep-for or sit-for?
              do (sleep-for seconds))))
+
 
 (cl-defmacro plz-deftest (name () &body docstring-keys-and-body)
   "Like `ert-deftest', but defines tests for both HTTP/1.1 and HTTP/2.

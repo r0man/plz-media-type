@@ -277,6 +277,15 @@ STRING which is output just received from the process."
         (when moving
           (goto-char (process-mark process)))))))
 
+(defconst plz-media-type--blank-line-regexp
+  (rx (+ space) (or "\r\n" "\n" "\r"))
+  "Regular expression matching a blank line.")
+
+(defun plz-media-type--delete-blank-lines ()
+  "Delete the next blank lines following point."
+  (while (looking-at plz-media-type--blank-line-regexp)
+    (delete-region (match-beginning 0) (match-end 0))))
+
 ;; Content Type: application/octet-stream
 
 (defclass plz-media-type:application/octet-stream (plz-media-type)
@@ -461,7 +470,8 @@ will always be set to nil.")
   "Parse a single line of the newline delimited JSON MEDIA-TYPE."
   (when (looking-at plz-media-type:application/x-ndjson--line-regexp)
     (prog1 (plz-media-type--parse-json-object media-type)
-      (delete-region (match-beginning 0) (match-end 0)))))
+      (when (< (match-beginning 0) (match-end 0))
+        (delete-region (match-beginning 0) (match-end 0))))))
 
 (defun plz-media-type:application/x-ndjson--parse-stream (media-type)
   "Parse all lines of the newline delimited JSON MEDIA-TYPE in the PROCESS buffer."
@@ -470,11 +480,14 @@ will always be set to nil.")
       (unless plz-media-type--position
         (setq-local plz-media-type--position (point)))
       (goto-char plz-media-type--position)
-      (when-let (object (plz-media-type:application/x-ndjson--parse-line media-type))
-        (while object
-          (setq-local plz-media-type--position (point))
-          (push object objects)
-          (setq object (plz-media-type:application/x-ndjson--parse-line media-type))))
+      (plz-media-type--delete-blank-lines)
+      (condition-case nil
+          (when-let (object (plz-media-type:application/x-ndjson--parse-line media-type))
+            (while object
+              (setq-local plz-media-type--position (point))
+              (push object objects)
+              (setq object (plz-media-type:application/x-ndjson--parse-line media-type))))
+        (json-end-of-file))
       objects)))
 
 (cl-defmethod plz-media-type-process
