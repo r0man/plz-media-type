@@ -308,6 +308,7 @@ body.  It is used as the default media type processor.")
   "Transform the RESPONSE into a format suitable for MEDIA-TYPE."
   (ignore media-type)
   (setf (plz-response-body response) (buffer-string))
+  (delete-region (point) (point-max))
   response)
 
 (cl-defmethod plz-media-type-process
@@ -358,10 +359,12 @@ accordingly.")
 (defun plz-media-type--parse-json-object (media-type)
   "Parse the JSON object in the current buffer according to MEDIA-TYPE."
   (with-slots (array-type false-object null-object object-type) media-type
-    (json-parse-buffer :array-type array-type
-                       :false-object false-object
-                       :null-object null-object
-                       :object-type object-type)) )
+    (let ((start (point)))
+      (prog1 (json-parse-buffer :array-type array-type
+                                :false-object false-object
+                                :null-object null-object
+                                :object-type object-type)
+        (delete-region start (point))))))
 
 (cl-defmethod plz-media-type-then
   ((media-type plz-media-type:application/json) response)
@@ -469,9 +472,7 @@ will always be set to nil.")
 (defun plz-media-type:application/x-ndjson--parse-line (media-type)
   "Parse a single line of the newline delimited JSON MEDIA-TYPE."
   (when (looking-at plz-media-type:application/x-ndjson--line-regexp)
-    (prog1 (plz-media-type--parse-json-object media-type)
-      (when (< (match-beginning 0) (match-end 0))
-        (delete-region (match-beginning 0) (match-end 0))))))
+    (plz-media-type--parse-json-object media-type)))
 
 (defun plz-media-type:application/x-ndjson--parse-stream (media-type)
   "Parse all lines of the newline delimited JSON MEDIA-TYPE in the PROCESS buffer."
@@ -523,6 +524,7 @@ function.")
   (with-slots (array-type false-object null-object object-type) media-type
     (setf (plz-response-body response)
           (libxml-parse-html-region (point-min) (point-max) nil))
+    (delete-region (point) (point-max))
     response))
 
 ;; Content Type: text/html
@@ -745,10 +747,17 @@ not.
                              :then (if (symbolp then)
                                        then
                                      (lambda (_)
-                                       (when (or (functionp then) (symbolp then))
-                                         (funcall then (plz-media-type-then
-                                                        plz-media-type--current
-                                                        plz-media-type--response)))))))
+                                       (let ((response (plz-media-type-then plz-media-type--current plz-media-type--response))
+                                             (content (string-trim (buffer-substring (point) (point-max)))))
+                                         (if (zerop (length content))
+                                             (when (and (or (functionp then) (symbolp then)))
+                                               (funcall then response))
+                                           (when (functionp else)
+                                             (setf (plz-response-body response) content)
+                                             (funcall else (make-plz-error
+                                                            :message (format "Failed to parse response, %s byte%s unprocessed"
+                                                                             (length content) (if (= 1 (length content)) "" "s"))
+                                                            :response response)))))))))
                    (buffer (if (processp result) (process-buffer result) result)))
             (cond ((bufferp result)
                    (plz-media-type--handle-sync-response result))
