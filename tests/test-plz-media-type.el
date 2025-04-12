@@ -581,6 +581,18 @@
       (should (equal '(6 . "Couldn't resolve host. The given remote host was not resolved.")
                      (plz-error-curl-error error))))))
 
+(ert-deftest test-plz-media-type-request-override-plz-curl-default-args ()
+  (let* ((expected (cons "--verbose" plz-curl-default-args))
+         (actual nil)
+         (then (lambda (_)
+                 (setq actual plz-curl-default-args))))
+    (let ((plz-curl-default-args expected)
+          (process (plz-media-type-request 'get "https://httpbin.org/status/200"
+                     :as `(media-types ,plz-media-types)
+                     :then then)))
+      (plz-media-type-test-wait process)
+      (should (equal expected actual)))))
+
 ;;;; Footer
 
 (provide 'test-plz-media-type)
