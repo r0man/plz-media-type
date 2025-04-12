@@ -720,52 +720,52 @@ not.
   (if-let (media-types (pcase as
                          (`(media-types ,media-types)
                           media-types)))
-      (condition-case error
-          (letrec ((plz-curl-default-args (cons "--no-buffer" plz-curl-default-args))
-                   (result (plz method url
-                             :as 'buffer
-                             :body body
-                             :body-type body-type
-                             :connect-timeout connect-timeout
-                             :decode decode
-                             :else (lambda (error)
-                                     (when (or (functionp else) (symbolp else))
-                                       (funcall else (plz-media-type-else
-                                                      plz-media-type--current
-                                                      error))))
-                             :finally (lambda ()
-                                        (unwind-protect
-                                            (when (functionp finally)
-                                              (funcall finally))
-                                          (when (buffer-live-p buffer)
-                                            (kill-buffer buffer))))
-                             :headers headers
-                             :noquery noquery
-                             :filter (lambda (process chunk)
-                                       (plz-media-type-process-filter process media-types chunk))
-                             :timeout timeout
-                             :then (if (symbolp then)
-                                       then
-                                     (lambda (_)
-                                       (let ((response (plz-media-type-then plz-media-type--current plz-media-type--response))
-                                             (content (string-trim (buffer-substring (point) (point-max)))))
-                                         (if (zerop (length content))
-                                             (when (and (or (functionp then) (symbolp then)))
-                                               (funcall then response))
-                                           (when (functionp else)
-                                             (setf (plz-response-body response) content)
-                                             (funcall else (make-plz-error
-                                                            :message (format "Failed to parse response, %s byte%s unprocessed"
-                                                                             (length content) (if (= 1 (length content)) "" "s"))
-                                                            :response response)))))))))
-                   (buffer (if (processp result) (process-buffer result) result)))
-            (cond ((bufferp result)
-                   (plz-media-type--handle-sync-response result))
-                  ((processp result)
-                   result)
-                  (t (user-error "Unexpected response: %s" result))))
-        ;; TODO: How to kill the buffer for sync requests that raise an error?
-        (plz-error (plz-media-type--handle-sync-error error media-types)))
+      (let ((plz-curl-default-args (cons "--no-buffer" plz-curl-default-args)))
+        (condition-case error
+            (letrec ((result (plz method url
+                               :as 'buffer
+                               :body body
+                               :body-type body-type
+                               :connect-timeout connect-timeout
+                               :decode decode
+                               :else (lambda (error)
+                                       (when (or (functionp else) (symbolp else))
+                                         (funcall else (plz-media-type-else
+                                                        plz-media-type--current
+                                                        error))))
+                               :finally (lambda ()
+                                          (unwind-protect
+                                              (when (functionp finally)
+                                                (funcall finally))
+                                            (when (buffer-live-p buffer)
+                                              (kill-buffer buffer))))
+                               :headers headers
+                               :noquery noquery
+                               :filter (lambda (process chunk)
+                                         (plz-media-type-process-filter process media-types chunk))
+                               :timeout timeout
+                               :then (if (symbolp then)
+                                         then
+                                       (lambda (_)
+                                         (let ((response (plz-media-type-then plz-media-type--current plz-media-type--response))
+                                               (content (string-trim (buffer-substring (point) (point-max)))))
+                                           (if (zerop (length content))
+                                               (when (and (or (functionp then) (symbolp then)))
+                                                 (funcall then response))
+                                             (when (functionp else)
+                                               (setf (plz-response-body response) content)
+                                               (funcall else (make-plz-error
+                                                              :message (format "Failed to parse response, %s byte%s unprocessed"
+                                                                               (length content) (if (= 1 (length content)) "" "s"))
+                                                              :response response)))))))))
+                     (buffer (if (processp result) (process-buffer result) result)))
+              (cond ((bufferp result)
+                     (plz-media-type--handle-sync-response result))
+                    ((processp result)
+                     result)
+                    (t (user-error "Unexpected response: %s" result))))
+          ;; TODO: How to kill the buffer for sync requests that raise an error?
+          (plz-error (plz-media-type--handle-sync-error error media-types))))
     (apply #'plz (append (list method url) rest))))
 
 
